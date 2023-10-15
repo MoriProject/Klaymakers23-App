@@ -1,6 +1,6 @@
-# team_tothemoon_app
+# morimori
 
-This is the hackathon to the moon team application.
+A new Flutter project.
 
 ## Getting Started
 

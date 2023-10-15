@@ -1,11 +1,11 @@
 {
-    "name": "team_tothemoon_app",
-    "short_name": "team_tothemoon_app",
+    "name": "morimori",
+    "short_name": "morimori",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "This is the hackathon to the moon team application.",
+    "description": "A new Flutter project.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

@@ -1,4 +1,4 @@
-package com.example.team_tothemoon_app
+package com.team.morimori.app.morimori
 
 import io.flutter.embedding.android.FlutterActivity
 

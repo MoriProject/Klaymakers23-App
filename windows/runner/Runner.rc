@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "team_tothemoon_app" "\0"
+            VALUE "CompanyName", "com.team.morimori.app" "\0"
+            VALUE "FileDescription", "morimori" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "team_tothemoon_app" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "team_tothemoon_app.exe" "\0"
-            VALUE "ProductName", "team_tothemoon_app" "\0"
+            VALUE "InternalName", "morimori" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2023 com.team.morimori.app. All rights reserved." "\0"
+            VALUE "OriginalFilename", "morimori.exe" "\0"
+            VALUE "ProductName", "morimori" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
