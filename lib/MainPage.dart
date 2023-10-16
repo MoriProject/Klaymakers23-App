@@ -12,6 +12,8 @@ class MainPage extends StatefulWidget{
 
 class MainPageHome extends State<MainPage>{
 
+  static final GlobalKey<ScaffoldState> globalKey = GlobalKey();
+
   @override
   void initState(){
 
@@ -29,6 +31,20 @@ class MainPageHome extends State<MainPage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: globalKey,
+
+      drawer: MenuDrawer(context),
+
+      appBar: AppBar(
+
+
+        leading: GestureDetector(
+          onTap: (){
+            globalKey.currentState!.openDrawer();
+          },
+          child: Icon(Icons.menu),
+        )
+      ),
 
 
 
@@ -37,5 +53,31 @@ class MainPageHome extends State<MainPage>{
   }
 
 
+
+}
+
+
+Widget MenuDrawer(BuildContext context){
+
+  return Drawer(
+    child: ListView(
+
+      padding: EdgeInsets.zero,
+      children: <Widget>[
+
+        ListTile(
+          leading: Icon(
+            Icons.account_circle_outlined,
+          ),
+          title: const Text('프로필'),
+          onTap: () {
+            Navigator.pop(context);
+
+          },
+        ),
+      ],
+
+    ),
+  );
 
 }
