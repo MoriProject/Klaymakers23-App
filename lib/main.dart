@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:morimori/pages/LoginPage.dart';
 
 import 'pages/MainPage.dart';
 
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MainPage(),
+      home: const LoginPage(),
     );
   }
 }
