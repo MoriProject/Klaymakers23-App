@@ -10,14 +10,18 @@ class MainPage extends StatefulWidget{
 }
 
 
-class MainPageHome extends State<MainPage>{
+class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
 
   static final GlobalKey<ScaffoldState> globalKey = GlobalKey();
+  final PageController pageController = PageController(initialPage: 1);
+  late final TabController tabController;
 
   @override
   void initState(){
 
+    tabController = TabController(length: 3, vsync: this);
     super.initState();
+
   }
 
 
@@ -35,17 +39,105 @@ class MainPageHome extends State<MainPage>{
 
       drawer: MenuDrawer(context),
 
-      appBar: AppBar(
+      body: NestedScrollView(
+        floatHeaderSlivers: true,
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled){
+          return <Widget>[
+            SliverAppBar(
+              leading: GestureDetector(
+                onTap: (){
+                  globalKey.currentState!.openDrawer();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+                  child: Icon(Icons.menu),
+                ),
+              ),
+              backgroundColor: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
+
+              title: TextField(),
+              
+              actions: [
+
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+                  child: Icon(Icons.search),
+                ),
+                
+              ],
+
+              bottom: PreferredSize(
+                preferredSize: _tabBar.preferredSize,
+                child: Material(
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.white
+                      : Colors.black,
+                  child: Theme(
+                    //<-- SEE HERE
+                    data: ThemeData().copyWith(splashColor: Colors.grey),
+                    child: TabBar(
+                      indicatorSize: TabBarIndicatorSize.label,
+                      // indicator: BoxDecoration(
+                      //     borderRadius: BorderRadius.circular(20), // Creates border
+                      //     color: Colors.greenAccent),
+                      controller: tabController,
+                      //이것같음.
+                      tabs: const [
+                        Tab(
+                            child: Text("Open",
+                                style: TextStyle(color: Colors.grey))),
+                        Tab(
+                            child: Text("Upcoming",
+                                style: TextStyle(color: Colors.grey))),
+                        Tab(
+                            child: Text("Past",
+                                style: TextStyle(color: Colors.grey))),
+
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ];
+          }, body: TabBarView(
+
+        controller: tabController,
+
+        children: <Widget>
+        [
+          SizedBox(
+            height: MediaQuery.of(context).size.height - 60,
+            child: RefreshIndicator(child: listViewer(), onRefresh: () async{
+
+            }),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height - 60,
+            child: RefreshIndicator(child: listViewer(), onRefresh: () async{
+
+            }),
+          ),
+
+          SizedBox(
+            height: MediaQuery.of(context).size.height - 60,
+            child: RefreshIndicator(child: listViewer(), onRefresh: () async{
+
+            }),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height - 60,
+            child: RefreshIndicator(child: listViewer(), onRefresh: () async{
+
+            }),
+          )
 
 
-        leading: GestureDetector(
-          onTap: (){
-            globalKey.currentState!.openDrawer();
-          },
-          child: Icon(Icons.menu),
-        )
-      ),
 
+
+
+        ],
+      ))
 
 
     );
@@ -61,17 +153,11 @@ Widget MenuDrawer(BuildContext context){
 
   return Drawer(
     child: ListView(
-
       padding: EdgeInsets.zero,
       children: <Widget>[
-
-
-
-
         GestureDetector(
           onTap: () {
             Navigator.pop(context);
-
           },
           child: UserAccountsDrawerHeader(
             //Drawer 헤드부분 생성 후 설정부분
@@ -95,10 +181,6 @@ Widget MenuDrawer(BuildContext context){
           ),
         ),
 
-
-
-
-
         ListTile(
           leading: Icon(
             Icons.account_circle_outlined,
@@ -106,12 +188,183 @@ Widget MenuDrawer(BuildContext context){
           title: const Text('프로필'),
           onTap: () {
             Navigator.pop(context);
-
           },
         ),
       ],
-
     ),
   );
 
+}
+
+TabBar get _tabBar => const TabBar(
+  tabs: [
+    Tab(icon: Icon(Icons.flight)),
+    Tab(icon: Icon(Icons.directions_transit)),
+    Tab(icon: Icon(Icons.directions_car)),
+  ],
+);
+
+
+Widget listViewer(){
+
+
+  return ListView.separated(
+      scrollDirection: Axis.vertical,
+
+      //shrinkWrap: true,
+      padding: const EdgeInsets.all(2.0),
+      itemCount:10,
+      itemBuilder: (BuildContext context, int index){
+        var widths = MediaQuery.of(context).size.width;
+        var heights = MediaQuery.of(context).size.height;
+
+        return GestureDetector(
+          onTap: () {
+            print('hello');
+          },
+          child: Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+            child:  Padding(
+              padding: const EdgeInsets.fromLTRB(2, 2, 2, 2),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+
+
+
+
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+
+
+                      Text('제목제목제목',style: TextStyle(fontSize: 30),),
+                      //여기다가
+
+
+
+                      SizedBox(
+                        width: widths - 300,
+                      ),
+                      Text(
+                          '30 days left'),
+                      //=> 시간 들어가는 부분(영국 표준 협정시 기준으로 로직을 계산해서 넣을것)
+                    ],
+                  ),
+
+
+
+
+
+
+
+                  //서버에서 받아온 내용에서, 사진이 없으면, 따로 쳐내는 코드 넣을것.
+
+                  Container(),
+
+                  Image.network('https://hidamarirhodonite.kirara.ca/spread/200297.png'),
+
+
+                  Row(
+
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+
+
+                      Row(children: <Widget>[
+
+
+
+                        Card(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                side: BorderSide(
+                                    color: Colors.black87.withOpacity(0.5),
+                                    width: 1)
+                            ),
+                            elevation: 0,
+                            child: const Padding(
+                                padding: EdgeInsets.fromLTRB(20, 8, 20, 8),
+                                child:
+                                Text('#egg',
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 12
+                                    ))
+
+                            )
+                        ),
+
+                        Card(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                side: BorderSide(
+                                    color: Colors.black87.withOpacity(0.5),
+                                    width: 1)
+                            ),
+                            elevation: 0,
+                            child: const Padding(
+                                padding: EdgeInsets.fromLTRB(20, 8, 20, 8),
+                                child:
+                                Text('#character',
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 12
+                                    ))
+
+                            )
+                        ),
+
+
+                      ],
+                      ),
+
+
+                      Card(
+                          color: Colors.blue,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              side: BorderSide(
+                                  color: Colors.black87.withOpacity(0.5),
+                                  width: 1)
+                          ),
+                          elevation: 0,
+                          child: const Padding(
+                              padding: EdgeInsets.fromLTRB(20, 8, 20, 8),
+                              child:
+                              Text('Apply now',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 12
+                                  ))
+
+                          )
+                      ),
+
+
+
+
+
+
+
+
+                    ],
+
+                  ),
+
+                ],
+              ),
+            ),
+          )
+        );
+
+
+
+  },
+      separatorBuilder: (BuildContext context, int index) {
+        return Container();
+      },
+
+
+  );
 }
