@@ -15,6 +15,9 @@ class EventPageHome extends State<EventPage> with TickerProviderStateMixin{
   static final GlobalKey<ScaffoldState> globalKey = GlobalKey();
   final PageController pageController = PageController(initialPage: 1);
   late final TabController tabController;
+  bool _expanded = false;
+
+  var value = 'Overview';
 
   @override
   void initState(){
@@ -97,7 +100,77 @@ class EventPageHome extends State<EventPage> with TickerProviderStateMixin{
 
               ),
 
-              Center(child: Text('Monitor GirlFreind 2023',style: TextStyle(fontSize: 30),),)
+              Center(child: Text('Monitor GirlFreind 2023',style: TextStyle(fontSize: 30),),),
+
+
+              Divider(),
+
+
+
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+
+                Text(value),
+
+                PopupMenuButton(
+
+                  icon: const Icon(Icons.expand_more_outlined),
+                  onSelected: (value) {
+                    // your logic
+                  },
+                  itemBuilder: (BuildContext bc) {
+                    return  [
+                      PopupMenuItem(
+                        child: Text("Overview"),
+                        value: 'Overview',
+                        onTap: (){
+
+
+                          setState(() {
+                            value = 'Overview';
+                          });
+
+                        },
+                      ),
+                      PopupMenuItem(
+                        child: Text("Participants(346)"),
+                        value: 'Participants(346)',
+                        onTap: (){
+
+                          setState(() {
+                            value = 'Participants(346)';
+                          });
+                        },
+                      ),
+                      PopupMenuItem(
+                        child: Text("Rules"),
+                        value: 'Rules',
+                        onTap: (){
+
+                          setState(() {
+                            value = 'Rules';
+                          });
+                        },
+                      )
+                    ];
+                  },
+                )
+              ],
+              ),
+
+              Divider(),
+
+
+              value == 'Overview' ? EventInfo(context) : Container()
+
+
+
+
+
+              
+
 
 
 
@@ -123,6 +196,53 @@ class EventPageHome extends State<EventPage> with TickerProviderStateMixin{
 
 
 }
+
+
+Widget EventInfo(BuildContext context){
+  
+  return Column(
+
+    crossAxisAlignment: CrossAxisAlignment.start,
+
+    children: <Widget>[
+      Divider(),
+      Text('OCT 30 - DEC1, 2023'),
+
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+
+
+
+
+        Text('＄10,000 in prizes'),
+        Text('1001 participants')
+      ],
+      ),
+
+      Divider(),
+
+
+      Text('I want a picture of my monitor girlfriend. It is free form. Please refer to the ‘Prize’ section below for the prize list.'),
+      Divider(),
+
+      Text('PRIZES',style: TextStyle(fontSize: 20),),
+
+      Text('First place'),
+      Text('＄10,000'),
+      Text('2nd place'),
+      Text('＄50,000'),
+      Text('3rd place'),
+      Text('＄30,000'),
+
+
+    ]
+    
+
+    
+    
+  );
+} 
 
 
 Widget MenuDrawer(BuildContext context){
