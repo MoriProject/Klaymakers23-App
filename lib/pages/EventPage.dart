@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 
-import 'EventPage.dart';
 
+class EventPage extends StatefulWidget{
 
-class MainPage extends StatefulWidget{
-
-  const MainPage({Key? key}) : super(key: key);
+  const EventPage({Key? key}) : super(key: key);
 
   @override
-  MainPageHome createState() => MainPageHome();
+  EventPageHome createState() => EventPageHome();
 }
 
 
-class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
+class EventPageHome extends State<EventPage> with TickerProviderStateMixin{
 
   static final GlobalKey<ScaffoldState> globalKey = GlobalKey();
   final PageController pageController = PageController(initialPage: 1);
@@ -36,122 +34,86 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
+    var widths = MediaQuery.of(context).size.width;
+    var heights = MediaQuery.of(context).size.height;
+
     return Scaffold(
       key: globalKey,
 
       drawer: MenuDrawer(context),
 
-      body: NestedScrollView(
-        floatHeaderSlivers: true,
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled){
-          return <Widget>[
-            SliverAppBar(
-              leading: GestureDetector(
-                onTap: (){
-                  globalKey.currentState!.openDrawer();
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-                  child: Icon(Icons.menu),
-                ),
-              ),
-              backgroundColor: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
-
-              title: TextField(),
-              
-              actions: [
-
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-                  child: Icon(Icons.search),
-                ),
-                
-              ],
-
-              bottom: PreferredSize(
-                preferredSize: _tabBar.preferredSize,
-                child: Material(
-                  color: Theme.of(context).brightness == Brightness.light
-                      ? Colors.white
-                      : Colors.black,
-                  child: Theme(
-                    //<-- SEE HERE
-                    data: ThemeData().copyWith(splashColor: Colors.grey),
-                    child: TabBar(
-                      indicatorSize: TabBarIndicatorSize.label,
-                      // indicator: BoxDecoration(
-                      //     borderRadius: BorderRadius.circular(20), // Creates border
-                      //     color: Colors.greenAccent),
-                      controller: tabController,
-                      //이것같음.
-                      tabs: const [
-                        Tab(
-                            child: Text("Open",
-                                style: TextStyle(color: Colors.grey))),
-                        Tab(
-                            child: Text("Upcoming",
-                                style: TextStyle(color: Colors.grey))),
-                        Tab(
-                            child: Text("Past",
-                                style: TextStyle(color: Colors.grey))),
-
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ];
-          }, body: TabBarView(
-
-        controller: tabController,
-
-        children: <Widget>
-        [
-          SizedBox(
-            height: MediaQuery.of(context).size.height - 60,
-            child: RefreshIndicator(child: listViewer(), onRefresh: () async{
-
-            }),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height - 60,
-            child: RefreshIndicator(child: listViewer(), onRefresh: () async{
-
-            }),
-          ),
-
-          SizedBox(
-            height: MediaQuery.of(context).size.height - 60,
-            child: RefreshIndicator(child: listViewer(), onRefresh: () async{
-
-            }),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height - 60,
-            child: RefreshIndicator(child: listViewer(), onRefresh: () async{
-
-            }),
-          )
-
-
-
-
-
+      appBar: AppBar(
+        leading: BackButton(),
+        actions: <Widget>[
+          IconButton(onPressed: (){}, icon: Icon(Icons.search))
         ],
-      )
       ),
+      body: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+        child:  Padding(
+          padding: const EdgeInsets.fromLTRB(2, 2, 2, 2),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
 
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue,
-        onPressed: () {
 
-        },
-        child: const Icon(
-          Icons.add,
+
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+
+
+
+                  //여기다가
+
+
+
+                  SizedBox(
+                    width: widths - 300,
+                  ),
+                  Text(
+                      '30 days left'),
+                  //=> 시간 들어가는 부분(영국 표준 협정시 기준으로 로직을 계산해서 넣을것)
+                ],
+              ),
+
+
+
+
+
+
+
+              //서버에서 받아온 내용에서, 사진이 없으면, 따로 쳐내는 코드 넣을것.
+
+              Container(),
+
+              Padding(padding:  const EdgeInsets.all(5.0),
+
+                child:    ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child:  Image.network('https://hidamarirhodonite.kirara.ca/spread/200297.png'),
+                ),
+
+              ),
+
+              Center(child: Text('Monitor GirlFreind 2023',style: TextStyle(fontSize: 30),),)
+
+
+
+
+
+
+
+
+
+
+            ],
+          ),
         ),
-      ),
+      )
+
+
 
 
     );
@@ -180,9 +142,9 @@ Widget MenuDrawer(BuildContext context){
 
               children: <Widget>[
                 ClipRRect(
-                      borderRadius: BorderRadius.circular(180),
-                      child:  Image.network('https://dcjnmis8jxmbl.cloudfront.net/upload/image/member/thumbnail/2022/01/12/3Dwra57Bjvhcqsuy.webp'),
-                    ),
+                  borderRadius: BorderRadius.circular(180),
+                  child:  Image.network('https://dcjnmis8jxmbl.cloudfront.net/upload/image/member/thumbnail/2022/01/12/3Dwra57Bjvhcqsuy.webp'),
+                ),
 
 
               ],
@@ -221,7 +183,7 @@ Widget MenuDrawer(BuildContext context){
 
         ListTile(
           leading: Icon(
-           Icons.settings
+              Icons.settings
           ),
           title: const Text('setting'),
           onTap: () {
@@ -247,18 +209,18 @@ Widget listViewer(){
 
 
   return ListView.separated(
-      scrollDirection: Axis.vertical,
+    scrollDirection: Axis.vertical,
 
-      //shrinkWrap: true,
-      padding: const EdgeInsets.all(2.0),
-      itemCount:10,
-      itemBuilder: (BuildContext context, int index){
-        var widths = MediaQuery.of(context).size.width;
-        var heights = MediaQuery.of(context).size.height;
+    //shrinkWrap: true,
+    padding: const EdgeInsets.all(2.0),
+    itemCount:10,
+    itemBuilder: (BuildContext context, int index){
+      var widths = MediaQuery.of(context).size.width;
+      var heights = MediaQuery.of(context).size.height;
 
-        return GestureDetector(
+      return GestureDetector(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>EventPage()));
+            print('hello');
           },
           child: Card(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
@@ -267,6 +229,7 @@ Widget listViewer(){
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+
 
 
 
@@ -300,15 +263,7 @@ Widget listViewer(){
 
                   Container(),
 
-                  Padding(padding:  const EdgeInsets.all(5.0),
-
-                  child:    ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child:  Image.network('https://hidamarirhodonite.kirara.ca/spread/200297.png'),
-                  ),
-
-                    ),
-
+                  Image.network('https://hidamarirhodonite.kirara.ca/spread/200297.png'),
 
 
 
@@ -403,14 +358,14 @@ Widget listViewer(){
               ),
             ),
           )
-        );
+      );
 
 
 
-  },
-      separatorBuilder: (BuildContext context, int index) {
-        return Container();
-      },
+    },
+    separatorBuilder: (BuildContext context, int index) {
+      return Container();
+    },
 
 
   );
