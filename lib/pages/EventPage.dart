@@ -153,6 +153,17 @@ class EventPageHome extends State<EventPage> with TickerProviderStateMixin{
                             value = 'Rules';
                           });
                         },
+                      ),
+
+                      PopupMenuItem(
+                        child: Text("Project gallery"),
+                        value: 'Project gallery',
+                        onTap: (){
+
+                          setState(() {
+                            value = 'Project';
+                          });
+                        },
                       )
                     ];
                   },
@@ -163,7 +174,7 @@ class EventPageHome extends State<EventPage> with TickerProviderStateMixin{
               Divider(),
 
 
-              value == 'Overview' ? eventInfo(context) : value == 'Participants' ? participantsInfo(context) : value == 'Rules' ? RulesInfo(context) : Container(child: Text('error'),)
+              value == 'Overview' ? eventInfo(context) : value == 'Participants' ? participantsInfo(context) : value == 'Rules' ? RulesInfo(context) : value == 'Project' ? projectInfo(context): Container(child: Text('error'),)
 
 
 
@@ -192,6 +203,105 @@ class EventPageHome extends State<EventPage> with TickerProviderStateMixin{
     );
 
   }
+
+
+
+}
+
+
+
+Widget projectInfo(BuildContext context){
+
+  return Expanded(
+    child:  ListView.separated(
+      scrollDirection: Axis.vertical,
+
+      //shrinkWrap: true,
+      padding: const EdgeInsets.all(2.0),
+      itemCount:10,
+      itemBuilder: (BuildContext context, int index){
+        var widths = MediaQuery.of(context).size.width;
+        var heights = MediaQuery.of(context).size.height;
+
+        return GestureDetector(
+            onTap: () {
+
+            },
+            child: Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+              child:  Stack(
+
+                children: <Widget>[
+
+
+                  Image.network('https://hidamarirhodonite.kirara.ca/spread/200297.png'),
+
+                  Positioned(
+                    child: Container(
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.black54, Colors.black87])
+                    ),
+
+
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+
+                      children:
+                    <Widget>[
+
+
+                      Text('hello',style: TextStyle(color: Colors.white,fontSize: 30)),
+                      Text('By embodying characters on the screen and making them feel something, I empathize with ...',style: TextStyle(color: Colors.white70)),
+                      Row(
+                        children: <Widget>[
+                          Text('Logan',style : TextStyle(color: Colors.white)),
+
+
+                        Positioned(
+                          child:
+                        Row(
+                          children: <Widget>[
+                            Icon(Icons.favorite_border_outlined, color: Colors.white,),
+                            Icon(Icons.message_outlined, color: Colors.white,),
+                          ],
+                        ),
+                          right: 0,
+                        ),
+
+                        ],
+                      )
+
+
+
+                    ],
+                    ),
+                  ),
+
+                  bottom: 0,
+
+                  )
+
+
+
+
+                ],
+
+
+              )
+            )
+        );
+
+
+
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return Container();
+      },
+
+
+    ),
+  );
+
 
 
 
