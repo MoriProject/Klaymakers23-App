@@ -140,7 +140,7 @@ class EventPageHome extends State<EventPage> with TickerProviderStateMixin{
                         onTap: (){
 
                           setState(() {
-                            value = 'Participants(346)';
+                            value = 'Participants';
                           });
                         },
                       ),
@@ -163,7 +163,7 @@ class EventPageHome extends State<EventPage> with TickerProviderStateMixin{
               Divider(),
 
 
-              value == 'Overview' ? EventInfo(context) : Container()
+              value == 'Overview' ? eventInfo(context) : value == 'Participants' ? participantsInfo(context) : value == 'Rules' ? RulesInfo(context) : Container(child: Text('error'),)
 
 
 
@@ -198,7 +198,159 @@ class EventPageHome extends State<EventPage> with TickerProviderStateMixin{
 }
 
 
-Widget EventInfo(BuildContext context){
+Widget participantsInfo(BuildContext context){
+
+  return Expanded(
+    child:  ListView.separated(
+      scrollDirection: Axis.vertical,
+
+      //shrinkWrap: true,
+      padding: const EdgeInsets.all(2.0),
+      itemCount:10,
+      itemBuilder: (BuildContext context, int index){
+        var widths = MediaQuery.of(context).size.width;
+        var heights = MediaQuery.of(context).size.height;
+
+        return GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>EventPage()));
+            },
+            child: Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+              child:  Padding(
+                padding: const EdgeInsets.fromLTRB(2, 2, 2, 2),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+
+
+
+
+
+
+                    //서버에서 받아온 내용에서, 사진이 없으면, 따로 쳐내는 코드 넣을것.
+
+
+
+                    Row(
+
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+
+                        SizedBox(
+                          height: 75,
+                          width: 75,
+
+                          child:   Padding(
+
+                            padding:  const EdgeInsets.all(5.0),
+
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(180),
+                              child:  Image.network('https://dcjnmis8jxmbl.cloudfront.net/upload/image/member/thumbnail/2022/01/12/3Dwra57Bjvhcqsuy.webp'),
+                            ),
+
+                          ),
+                        ),
+
+
+                        Text('Host'),
+
+
+                      ],
+                    ),
+
+
+
+
+                    Text('nickname'),
+
+                    Row(children: <Widget>[
+                      Text('2 PROJECTS'),
+                      Text('2 ACHIEVEMENT'),
+                      Text('2 BADGES'),
+
+                    ],)
+
+
+
+
+
+
+
+
+                  ],
+                ),
+              ),
+            )
+        );
+
+
+
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return Container();
+      },
+
+
+    ),
+  );
+
+
+
+
+}
+
+
+
+
+
+Widget RulesInfo(BuildContext context){
+
+  return Column(
+
+      crossAxisAlignment: CrossAxisAlignment.start,
+
+      children: <Widget>[
+        Divider(),
+        Text('I want a picture of my monitor girlfriend. It is free form. Please refer to the ‘Prize’ section below for the prize list.'),
+
+
+
+        Divider(),
+
+
+
+
+        Text('PRIZES',style: TextStyle(fontSize: 20),),
+
+        Text('First place'),
+        Text('＄10,000'),
+        Text('2nd place'),
+        Text('＄50,000'),
+        Text('3rd place'),
+        Text('＄30,000'),
+
+
+
+        Text('JUDGIND CRITERIA'),
+
+        Text('Beautifully'),
+        Text('Soundly'),
+        Text('Doing the best'),
+
+
+
+      ]
+
+
+
+
+  );
+}
+
+
+Widget eventInfo(BuildContext context){
   
   return Column(
 
@@ -316,6 +468,10 @@ Widget MenuDrawer(BuildContext context){
 
 }
 
+
+
+
+
 TabBar get _tabBar => const TabBar(
   tabs: [
     Tab(icon: Icon(Icons.flight)),
@@ -346,136 +502,8 @@ Widget listViewer(){
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
             child:  Padding(
               padding: const EdgeInsets.fromLTRB(2, 2, 2, 2),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
 
-
-
-
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-
-
-                      Text('제목제목제목',style: TextStyle(fontSize: 30),),
-                      //여기다가
-
-
-
-                      SizedBox(
-                        width: widths - 300,
-                      ),
-                      Text(
-                          '30 days left'),
-                      //=> 시간 들어가는 부분(영국 표준 협정시 기준으로 로직을 계산해서 넣을것)
-                    ],
-                  ),
-
-
-
-
-
-
-
-                  //서버에서 받아온 내용에서, 사진이 없으면, 따로 쳐내는 코드 넣을것.
-
-                  Container(),
-
-                  Image.network('https://hidamarirhodonite.kirara.ca/spread/200297.png'),
-
-
-
-
-                  Row(
-
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-
-
-                      Row(children: <Widget>[
-
-
-
-                        Card(
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                                side: BorderSide(
-                                    color: Colors.black87.withOpacity(0.5),
-                                    width: 1)
-                            ),
-                            elevation: 0,
-                            child: const Padding(
-                                padding: EdgeInsets.fromLTRB(20, 8, 20, 8),
-                                child:
-                                Text('#egg',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 12
-                                    ))
-
-                            )
-                        ),
-
-                        Card(
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                                side: BorderSide(
-                                    color: Colors.black87.withOpacity(0.5),
-                                    width: 1)
-                            ),
-                            elevation: 0,
-                            child: const Padding(
-                                padding: EdgeInsets.fromLTRB(20, 8, 20, 8),
-                                child:
-                                Text('#character',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 12
-                                    ))
-
-                            )
-                        ),
-
-
-                      ],
-                      ),
-
-
-                      Card(
-                          color: Colors.blue,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                              side: BorderSide(
-                                  color: Colors.black87.withOpacity(0.5),
-                                  width: 1)
-                          ),
-                          elevation: 0,
-                          child: const Padding(
-                              padding: EdgeInsets.fromLTRB(20, 8, 20, 8),
-                              child:
-                              Text('Apply now',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 12
-                                  ))
-
-                          )
-                      ),
-
-
-
-
-
-
-
-
-                    ],
-
-                  ),
-
-                ],
-              ),
+              child: Text('hello'),
             ),
           )
       );
