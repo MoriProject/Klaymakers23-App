@@ -1,4 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="metamask" android:host = "com.example.YOUR_PACKAGE_NAME" />
+        </intent>
+    </queries>
     <application
         android:label="morimori"
         android:name="${applicationName}"

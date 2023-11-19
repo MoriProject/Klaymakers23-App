@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:morimori/pages/MainPage.dart';
+import 'package:walletconnect_flutter_v2/apis/sign_api/models/session_models.dart';
+import 'package:walletconnect_flutter_v2/apis/sign_api/models/sign_client_models.dart';
+import 'package:walletconnect_flutter_v2/apis/sign_api/sign_client.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -61,24 +65,29 @@ class _LoginPageState extends State<LoginPage> {
                 height: 16,
               ),
               //metamask 로그인 버튼
-              Container(
-                height: 60,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(90)),
-                  border: Border.all(color: Colors.black45),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Image.asset('assets/metamasklogo.png'),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    const Text('Sign in with MetaMask'),
-                  ],
+              GestureDetector(
+                onTap: () {
+                  print('metamask login button clicked');
+                },
+                child: Container(
+                  height: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(90)),
+                    border: Border.all(color: Colors.black45),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Image.asset('assets/metamasklogo.png'),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      const Text('Sign in with MetaMask'),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(
