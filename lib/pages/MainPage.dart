@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'EventPage.dart';
+import 'ProfilePage.dart';
 import 'SettingPage.dart';
 
 
@@ -180,10 +181,18 @@ Widget MenuDrawer(BuildContext context){
             currentAccountPicture: Row(
 
               children: <Widget>[
-                ClipRRect(
-                      borderRadius: BorderRadius.circular(180),
-                      child:  Image.network('https://dcjnmis8jxmbl.cloudfront.net/upload/image/member/thumbnail/2022/01/12/3Dwra57Bjvhcqsuy.webp'),
-                    ),
+
+                GestureDetector(
+                  onTap: (){
+
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>ProfilePage()));
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(180),
+                    child:  Image.network('https://dcjnmis8jxmbl.cloudfront.net/upload/image/member/thumbnail/2022/01/12/3Dwra57Bjvhcqsuy.webp'),
+                  ),
+
+                ),
 
 
               ],
