@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'EventPage.dart';
+import 'SettingPage.dart';
 
 
 class MainPage extends StatefulWidget{
@@ -225,7 +226,7 @@ Widget MenuDrawer(BuildContext context){
           ),
           title: const Text('setting'),
           onTap: () {
-            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>SettingPage()));
           },
         ),
       ],

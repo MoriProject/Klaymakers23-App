@@ -371,16 +371,43 @@ Widget participantsInfo(BuildContext context){
                     ),
 
 
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(5,5,5,5),
+
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text('nickname',style: TextStyle(fontSize: 20),),
+
+                          Row(children: <Widget>[
+
+                            Padding( padding: const EdgeInsets.fromLTRB(0,5,10,2),
+                              child:
+                              Text('2 PROJECTS'),),
+
+                            Padding(  padding: const EdgeInsets.fromLTRB(0,5,10,2),
+                              child:
+                              Text('2 ACHIEVEMENT'),),
+
+                            Padding(  padding: const EdgeInsets.fromLTRB(0,5,10,2),
+                              child:
+                              Text('2 BADGES'),),
 
 
-                    Text('nickname'),
+                          ],)
 
-                    Row(children: <Widget>[
-                      Text('2 PROJECTS'),
-                      Text('2 ACHIEVEMENT'),
-                      Text('2 BADGES'),
+                        ],
+                      )
+                    ),
 
-                    ],)
+
+
+
+
+
+
+
+
 
 
 
@@ -423,31 +450,57 @@ Widget RulesInfo(BuildContext context){
 
       children: <Widget>[
         Divider(),
-        Text('I want a picture of my monitor girlfriend. It is free form. Please refer to the ‘Prize’ section below for the prize list.'),
 
-
+        Padding(  padding: const EdgeInsets.fromLTRB(5,5,5,5),
+          child: Text('I want a picture of my monitor girlfriend. It is free form. Please refer to the ‘Prize’ section below for the prize list.'),),
 
         Divider(),
 
 
 
 
+
+
+
         Text('PRIZES',style: TextStyle(fontSize: 20),),
 
-        Text('First place'),
-        Text('＄10,000'),
-        Text('2nd place'),
-        Text('＄50,000'),
-        Text('3rd place'),
-        Text('＄30,000'),
+        Padding(padding: const EdgeInsets.fromLTRB(20,5,5,5),
+            child: Column(children: <Widget>[
+
+              Text('First place'),
+              Text('＄10,000'),
+            ],)),
+
+        Padding(padding: const EdgeInsets.fromLTRB(20,5,5,5),
+            child: Column(children: <Widget>[
+
+              Text('2nd place'),
+              Text('＄50,000'),
+            ],)),
+
+        Padding(padding: const EdgeInsets.fromLTRB(20,5,5,5),
+            child: Column(children: <Widget>[
+
+
+              Text('3rd place'),
+              Text('＄30,000'),
+            ],)),
 
 
 
-        Text('JUDGIND CRITERIA'),
 
-        Text('Beautifully'),
-        Text('Soundly'),
-        Text('Doing the best'),
+        Text('JUDGIND CRITERIA',style: TextStyle(fontSize: 20)),
+
+        Padding(padding: const EdgeInsets.fromLTRB(20,5,5,5),
+            child: Column(children: <Widget>[
+
+
+              Text('Beautifully'),
+              Text('Soundly'),
+              Text('Doing the best'),
+            ],)),
+
+
 
 
 
