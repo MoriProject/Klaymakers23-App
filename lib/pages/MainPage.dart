@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:morimori/pages/EventMakingPage.dart';
 
 import 'EventPage.dart';
 import 'ProfilePage.dart';
@@ -148,7 +149,7 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
         onPressed: () {
-
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>EventMakingPage()));
         },
         child: const Icon(
           Icons.add,
@@ -268,7 +269,7 @@ Widget listViewer(){
 
         return GestureDetector(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>EventPage()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => EventPage()));
           },
           child: Card(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
