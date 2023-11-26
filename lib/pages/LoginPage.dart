@@ -20,9 +20,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-
   BuildContext? dialogContext;
-  final String signatureFromBackend = "NonStop IO Technologies Pvt Ltd.";
+  final String signatureFromBackend = "We are Mori";
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(
                   height: 16,
                 ),
-                //metamask 로그인 버튼
+                ///metamask 로그인 버튼
                 GestureDetector(
                   onTap: () {
                     print('metamask login button clicked');

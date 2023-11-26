@@ -17,46 +17,58 @@ class MetaMaskAuthBloc extends Bloc<WalletEvent, WalletState> {
       // 초기화 상태 발생
       emit(WalletInitializedState(message: AppConstants.initializing));
       // WalletConnect를 사용하여 메타마스크 초기화
+      print('1');
       bool isInitialize = await walletConnectorService.initialize();
+      print('2');
       if (isInitialize) {
         // 초기화 성공 상태 발생
         emit(WalletInitializedState(message: AppConstants.initialized));
+        print('3');
         // 메타마스크와 연결 시도
         ConnectResponse? resp = await walletConnectorService
             .connect(); // 메타마스크와 연결
-
+        print('4');
         if (resp != null) {
           // 메타마스크 URI 얻기
           Uri? uri = resp.uri;
+          print('5');
           if (uri != null) {
             // 메타마스크 앱으로 리다이렉트 하기
             bool canLaunch = await walletConnectorService.onDisplayUri(uri);
+            print('6');
             if (!canLaunch) {
               // 메타마스크 앱 설치되지 않은 경우 처리
               emit(WalletErrorState(message: AppConstants.metamaskNotInstalled));
+              print('7 - error');
             } else {
               // 메타마스크에서 인증 요청
               SessionData?
               sessionData = await walletConnectorService.authorize(
                   resp, event.signatureFromBackend);
+              print('7');
               if (sessionData != null) {
                 // 인증 성공 상태 발생
                 emit(WalletAuthorizedState(
                     message: AppConstants.connectionSuccessful));
+                print('8');
                 if (resp.session.isCompleted) {
                   // 지갑 주소 추출
                   final String walletAddress = NamespaceUtils.getAccount(
                     sessionData.namespaces.values.first.accounts.first,
                   );
                   debugPrint("WALLET ADDRESS - $walletAddress");
+                  print('9');
                   // 메타마스크 앱으로 다시 리다이렉트
                   bool canLaunch =
                   await walletConnectorService.onDisplayUri(uri);
+                  print('10');
                   if (!canLaunch) {
                     // 메타마스크 앱 설치되지 않은 경우 처리
                     emit(WalletErrorState(
                         message: AppConstants.metamaskNotInstalled));
+                    print('11 - error');
                   } else {
+                    print('11');
                     // 메타마스크로 서명 요청
                     final signatureFromWallet =
                     await walletConnectorService.sendMessageForSigned(
@@ -67,6 +79,7 @@ class MetaMaskAuthBloc extends Bloc<WalletEvent, WalletState> {
                     if (signatureFromWallet != null &&
                         signatureFromWallet != "") {
                       // 서명 수신 성공 상태 발생
+                      print('success');
                       emit(WalletReceivedSignatureState(
                           signatureFromWallet: signatureFromWallet,
                           signatureFromBk: event.signatureFromBackend,
@@ -84,6 +97,7 @@ class MetaMaskAuthBloc extends Bloc<WalletEvent, WalletState> {
                 }
               } else {
                 // 연결 요청 취소 처리
+                print('7 8 - error');
                 emit(WalletErrorState(
                     message: AppConstants.userDeniedConnectionRequest));
               }
@@ -91,6 +105,7 @@ class MetaMaskAuthBloc extends Bloc<WalletEvent, WalletState> {
           }
         }
       } else {
+        print('all error');
         // WalletConnect 오류 처리
         emit(WalletErrorState(message: AppConstants.walletConnectError));
       }

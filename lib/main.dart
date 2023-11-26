@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:morimori/pages/LoginPage.dart';
+import 'package:morimori/services/services.dart';
 
 import 'bloc/metamask_auth_bloc.dart';
 import 'pages/MainPage.dart';
 
 void main() {
+  initServices();
   runApp(const MyApp());
 }
 

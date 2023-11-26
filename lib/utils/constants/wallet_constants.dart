@@ -10,7 +10,7 @@ class WalletConstants {
     method: "personal_sign", // 사용되는 서명 메소드입니다.
     events: ["chainChanged", "accountsChanged"], // 지갑 이벤트들의 목록입니다.
     relayUrl: "wss://relay.walletconnect.com", // WalletConnect 릴레이 서버 URL입니다.
-    projectId: "68ccdce69aec001e3cd0b33aec530b81", // 프로젝트 ID입니다.
+    projectId: "6dea31b489fe0fc88688f4c467302b02", // 프로젝트 ID입니다.
     redirectUrl: "metamask://com.example.metamask_login_blog", // 리다이렉트 URL입니다.
     walletConnectUrl: "https://walletconnect.com", // WalletConnect URL입니다.
   );

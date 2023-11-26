@@ -4,7 +4,7 @@
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="metamask" android:host = "com.example.YOUR_PACKAGE_NAME" />
+            <data android:scheme="metamask" android:host = "com.team.morimori.app.morimori" />
         </intent>
     </queries>
     <application
