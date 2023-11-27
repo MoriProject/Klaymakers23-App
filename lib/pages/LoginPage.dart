@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:morimori/pages/MainPage.dart';
 import 'package:morimori/bloc/metamask_auth_bloc.dart';
 import 'package:morimori/bloc/wallet_state.dart';
+import 'package:morimori/pages/terms_screen.dart';
 import 'package:morimori/ui/features/widgets/custom/other_custom_widgets.dart';
 import 'package:morimori/ui/features/widgets/custom/show_snack_bar.dart';
 import 'package:morimori/utils/constants/app_constants.dart';
@@ -41,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
               context, AppConstants.authenticationSuccessful);
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (BuildContext context) {
-                return const MainPage();
+                return const TermsScreen();
               }));
         }
       },

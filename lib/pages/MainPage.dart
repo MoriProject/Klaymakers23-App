@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:morimori/pages/EventMakingPage.dart';
+import 'package:morimori/pages/terms_screen.dart';
 
 import 'EventPage.dart';
 import 'ProfilePage.dart';
@@ -16,7 +17,6 @@ class MainPage extends StatefulWidget{
 
 
 class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
-
   static final GlobalKey<ScaffoldState> globalKey = GlobalKey();
   final PageController pageController = PageController(initialPage: 1);
   late final TabController tabController;
@@ -130,17 +130,6 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
 
             }),
           ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height - 60,
-            child: RefreshIndicator(child: listViewer(), onRefresh: () async{
-
-            }),
-          )
-
-
-
-
-
         ],
       )
       ),
@@ -239,6 +228,16 @@ Widget MenuDrawer(BuildContext context){
             Navigator.push(context, MaterialPageRoute(builder: (context) =>SettingPage()));
           },
         ),
+        ///약관 스크린 테스트 용
+        ListTile(
+          leading: Icon(
+              Icons.settings
+          ),
+          title: const Text('terms test screen'),
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>const TermsScreen()));
+          },
+        ),
       ],
     ),
   );
@@ -255,8 +254,6 @@ TabBar get _tabBar => const TabBar(
 
 
 Widget listViewer(){
-
-
   return ListView.separated(
       scrollDirection: Axis.vertical,
 
