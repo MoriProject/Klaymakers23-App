@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:morimori/pages/MainPage.dart';
 import '/bloc/wallet_event.dart';
 import '/utils/constants/app_constants.dart';
 import 'package:walletconnect_flutter_v2/apis/sign_api/models/session_models.dart';

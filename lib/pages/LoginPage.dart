@@ -29,14 +29,20 @@ class _LoginPageState extends State<LoginPage> {
       // BLoC 상태에 따른 리스너 설정
       listener: (context, state) {
         if (state is WalletErrorState) {
+          print('오류 상태');
           // 오류 상태 처리
           hideDialog(dialogContext);
           ShowSnackBar.buildSnackbar(context, state.message, true);
         } else if (state is WalletReceivedSignatureState) {
+          print('서명 수신 성공');
           // 서명 수신 성공 처리
           hideDialog(dialogContext);
           ShowSnackBar.buildSnackbar(
               context, AppConstants.authenticationSuccessful);
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (BuildContext context) {
+                return const MainPage();
+              }));
         }
       },
       child: Scaffold(
