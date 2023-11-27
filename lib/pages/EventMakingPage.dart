@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class EventMakingPage extends StatefulWidget {
   const EventMakingPage({Key? key}) : super(key: key);
@@ -18,6 +20,19 @@ class EventMakingPageHome extends State<EventMakingPage> with TickerProviderStat
   var prizeNum = List.filled(1, '1', growable: true);
   var budget = List.filled(1, 0, growable: true);
   var numOfParti = List.filled(1, '0', growable: true);
+
+  //이미지 선택
+  final ImagePicker _picker = ImagePicker();
+  final List<XFile?> _pickedImages = [];
+
+  //단일 이미지 선택
+  void getImage(ImageSource source) async {
+    _pickedImages.clear();
+    final XFile? image = await _picker.pickImage(source: source);
+    setState(() {
+      _pickedImages.add(image);
+    });
+  }
 
   @override
   void initState() {
@@ -60,17 +75,37 @@ class EventMakingPageHome extends State<EventMakingPage> with TickerProviderStat
 
                   Text("Hackation Image"),
 
+                  //버튼의 InkWell이 카드의 전체로 퍼집니다.
+                  _pickedImages.isEmpty ?
                   SizedBox(
                     //height: heights,
                     height: 200,
                     width: widths,
-                    child:Card(
-                        child:  IconButton(
-                          icon: Icon(Icons.add),
-                          onPressed: () {
+                    child: Card(
+                      child: InkWell(
+                        onTap: () {
+                          getImage(ImageSource.gallery);
+                        },
+                        child: Container(
+                          width: double.infinity, // Ensures the InkWell fills the Card
+                          height: double.infinity, // Ensures the InkWell fills the Card
+                          alignment: Alignment.center, // Centers the IconButton
+                          child: Icon(Icons.add),
+                        ),
+                      ),
+                    ),
 
-                          },
-                        )
+                  ) : GestureDetector(
+                    onTap: () {
+                      getImage(ImageSource.gallery);
+                    },
+                    child: SizedBox(
+                      height: 200,
+                      width: widths,
+                      child: Image.file(
+                        File(_pickedImages[0]!.path),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
 
