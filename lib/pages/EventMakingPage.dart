@@ -13,7 +13,7 @@ class EventMakingPage extends StatefulWidget {
 }
 
 class EventMakingPageHome extends State<EventMakingPage> with TickerProviderStateMixin {
-  static final GlobalKey<ScaffoldState> globalKey = GlobalKey();
+  static final GlobalKey<NavigatorState> globalKey = GlobalKey<NavigatorState>();
   var value = 'Overview';
   //이미지 선택
   final ImagePicker _picker = ImagePicker();
@@ -151,6 +151,96 @@ class EventMakingPageHome extends State<EventMakingPage> with TickerProviderStat
     });
   }
 
+  void _showHackathonConfirmationDialog() async {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Are you sureyou want to create your hackation?'),
+          content: RichText(
+            text: const TextSpan(
+              style: TextStyle(color: Colors.black), // 기본 텍스트 색상
+              children: <TextSpan>[
+                TextSpan(text: 'Once the amount has been withdrawn, '),
+                TextSpan(
+                  text: 'it cannot be returned!',
+                  style: TextStyle(color: Colors.red), // "it cannot be returned!" 부분의 색상을 빨간색으로 설정
+                ),
+              ],
+            ),
+          )
+          ,
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: const Text('Create'),
+              onPressed: () {
+                Navigator.pop(context);
+                _showTransferDetailsDialog();
+              },
+            ),
+          ],
+        ),
+    );
+  }
+
+  void _showTransferDetailsDialog() {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Are you sure you want to create your hackation?'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                const Text('address : '),
+                GestureDetector(
+                  onTap: () {
+                    Clipboard.setData(const ClipboardData(text: 'afasfafs'));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Text copied to clipboard!')),
+                    );
+                  },
+                  child: const Chip(
+                      label: Row(
+                        children: [
+                          ///지갑 주소는 서버로부터 불러와야합니다.
+                          Text('지갑 주소'),
+                          Icon(Icons.content_copy),
+                        ],
+                      ),
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 10,),
+            Row(
+              children: [
+                Text('Need balance: \$ ${NumberFormat('#,##0.00', 'en_US').format(totalPrizeAmount*1.05)}'),
+              ],
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          TextButton(
+            child: const Text('Confirm'),
+            onPressed: () {
+              Navigator.pop(dialogContext);
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var widths = MediaQuery.of(context).size.width;
@@ -246,19 +336,15 @@ class EventMakingPageHome extends State<EventMakingPage> with TickerProviderStat
                               child: Text("Overview"),
                               value: 'Overview',
                               onTap: (){
-
-
                                 setState(() {
                                   value = 'Overview';
                                 });
-
                               },
                             ),
                             PopupMenuItem(
                               child: Text("Participants(346)"),
                               value: 'Participants(346)',
                               onTap: (){
-
                                 setState(() {
                                   value = 'Participants';
                                 });
@@ -268,18 +354,15 @@ class EventMakingPageHome extends State<EventMakingPage> with TickerProviderStat
                               child: Text("Rules"),
                               value: 'Rules',
                               onTap: (){
-
                                 setState(() {
                                   value = 'Rules';
                                 });
                               },
                             ),
-
                             PopupMenuItem(
                               child: Text("Project gallery"),
                               value: 'Project gallery',
                               onTap: (){
-
                                 setState(() {
                                   value = 'Project';
                                 });
@@ -339,24 +422,21 @@ class EventMakingPageHome extends State<EventMakingPage> with TickerProviderStat
                                       PopupMenuButton<String>(
                                         onSelected: (String value) {
                                           // Handle the selection
-                                          print(value);
-                                          selectedDistributionMethod[index] = value;
+                                          setState(() {
+                                            print(value);
+                                            selectedDistributionMethod[index] = value;
+                                          });
                                         },
                                         itemBuilder: (BuildContext context) =>
                                         <PopupMenuEntry<String>>[
                                           const PopupMenuItem<String>(
-                                            value: 'Option 1',
-                                            child: Text('Option 1'),
+                                            value: 'equally distributed',
+                                            child: Text('equally distributed'),
                                           ),
                                           const PopupMenuItem<String>(
-                                            value: 'Option 2',
-                                            child: Text('Option 2'),
+                                            value: 'differential distr..',
+                                            child: Text('differential distribution'),
                                           ),
-                                          const PopupMenuItem<String>(
-                                            value: 'Option 3',
-                                            child: Text('Option 3'),
-                                          ),
-                                          // Add more PopupMenuItem widgets as needed
                                         ],
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(
@@ -365,30 +445,22 @@ class EventMakingPageHome extends State<EventMakingPage> with TickerProviderStat
                                             color: Colors.white70,
                                             // Replace with your desired color
                                             borderRadius: BorderRadius.circular(30),
-                                            // boxShadow: [
-                                            //   BoxShadow(
-                                            //     color: Colors.black45,
-                                            //     blurRadius: 4,
-                                            //     offset: Offset(2, 2),
-                                            //   ),
-                                            // ],
                                           ),
                                           child: Row(
                                             mainAxisSize: MainAxisSize.min,
                                             // To minimize the container's size
-                                            children: const [
+                                            children: [
                                               Text(
-                                                'equally distributed',
-                                                style: TextStyle(
+                                                selectedDistributionMethod[index],
+                                                overflow: TextOverflow.ellipsis, // 오버플로우 발생 시 마침표로 처리
+                                                style: const TextStyle(
                                                   color: Colors.blue,
-                                                  // Replace with your desired text color
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
-                                              Icon(
+                                              const Icon(
                                                 Icons.arrow_drop_down,
-                                                color: Colors
-                                                    .grey, // Replace with your desired icon color
+                                                color: Colors.grey, // Replace with your desired icon color
                                               ),
                                             ],
                                           ),
@@ -506,14 +578,19 @@ class EventMakingPageHome extends State<EventMakingPage> with TickerProviderStat
                   ),
                   Row(
                     children: <Widget>[
-                      Text('Need balance: \$ ${NumberFormat('#,##0', 'en_US').format(totalPrizeAmount)}'),
+                      ///수수료 5%
+                      Text('Need balance: \$ ${NumberFormat('#,##0.00', 'en_US').format(totalPrizeAmount)} + Fee: \$ ${NumberFormat('#,##0.00', 'en_US').format(totalPrizeAmount*0.05)}'),
                     ],
                   ),
                   SizedBox(
                     width: widths,
                     child: Card(
                       color: Colors.lightBlueAccent,
-                      child: TextButton(onPressed: (){}, child: Text('Hackathon creation')),
+                      child: TextButton(
+                          onPressed: () {
+                            _showHackathonConfirmationDialog();
+                          },
+                          child: Text('Hackathon creation')),
                     ),
                   ),
                   const SizedBox(
