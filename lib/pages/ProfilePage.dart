@@ -19,6 +19,11 @@ class ProfilePageHome extends State<ProfilePage> with TickerProviderStateMixin {
 
   var value = 'Overview';
 
+  int numProjects = 2;
+  int numBadges = 2;
+  int numAchievements = 1;
+  int numHackthons = 2;
+
   @override
   void initState() {
     //tabController = TabController(length: 3, vsync: this);
@@ -67,11 +72,11 @@ class ProfilePageHome extends State<ProfilePage> with TickerProviderStateMixin {
               Divider(),
               TabBar(
                   controller: controller,
-                 tabs : const [
-                   Tab(icon: Text('2'), text: 'PROJECTS',),
-                  Tab(icon: Text('2'), text: 'BADGES',),
-                  Tab(icon: Text('2'), text: 'ACHIEVEMENTS'),
-                   Tab(icon: Text('2'), text: 'HACKTHONS'),
+                 tabs : [
+                   Tab(icon: Text(numProjects.toString()), text: 'PROJECTS',),
+                  Tab(icon: Text(numBadges.toString()), text: 'BADGES',),
+                  Tab(icon: Text(numAchievements.toString()), text: 'ACHIEVEMENTS'),
+                   Tab(icon: Text(numHackthons.toString()), text: 'HACKTHONS'),
                   ],
               ),
               SizedBox(
@@ -79,10 +84,10 @@ class ProfilePageHome extends State<ProfilePage> with TickerProviderStateMixin {
                   child : TabBarView(
                       controller: controller,
                       children: <Widget>[
-                        listViewer1(),
-                        listViewer(),
-                        listViewer(),
-                        listViewer(),
+                        eventItem(numProjects),
+                        badgeItem(numBadges),
+                        achievementItem(numAchievements),
+                        eventItem(numHackthons),
                       ])
               ),
             ],
@@ -92,11 +97,11 @@ class ProfilePageHome extends State<ProfilePage> with TickerProviderStateMixin {
   }
 }
 
-Widget listViewer1(){
+Widget eventItem(int num){
   return ListView.builder(
     scrollDirection: Axis.vertical,
     padding: const EdgeInsets.all(2.0),
-    itemCount:10,
+    itemCount: num,
     itemBuilder: (BuildContext context, int index){
       var widths = MediaQuery.of(context).size.width;
       var heights = MediaQuery.of(context).size.height;
@@ -206,6 +211,91 @@ Widget listViewer1(){
   );
 }
 
+Widget badgeItem(int num) {
+  // return Text('a');
+  return GridView.builder(
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 3, // 3열로 설정
+      crossAxisSpacing: 10, // 가로 간격
+      mainAxisSpacing: 10, // 세로 간격
+    ),
+    itemCount: num, // 생성할 아이템의 수
+    itemBuilder: (context, index) {
+      return Container(
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            colors: [
+              Colors.grey.withOpacity(0.6), // 하단은 더 뿌옇게
+              Colors.grey.withOpacity(0.0), // 상단은 투명하게
+            ],
+          ),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Image.asset('assets/icons/crown_icon.png',),
+      );
+    },
+  );
+}
+
+Widget achievementItem(int num) {
+  return ListView.builder(
+      itemCount: num,
+      itemBuilder: (BuildContext context, int index) {
+        return Container(
+          alignment: Alignment.topLeft,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              colors: [
+                Colors.grey.withOpacity(0.6), // 하단은 더 뿌옇게
+                Colors.grey.withOpacity(0.0), // 상단은 투명하게
+              ],
+            ),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Image.asset('assets/icons/mdi_human-welcome.png'),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Welcome!',
+                      style: TextStyle(
+                        fontSize: 16, // 폰트 사이즈 16
+                      ),
+                    ),
+                    SizedBox(height: 6,),
+                    Text(
+                      'Earned by signing up for our service',
+                      style: TextStyle(
+                        fontSize: 12, // 폰트 사이즈 12
+                      ),
+                    ),
+                    SizedBox(height: 6,),
+                    Text(
+                      'Achieved October 16, 2023',
+                      style: TextStyle(
+                        fontSize: 12, // 폰트 사이즈 12
+                        color: Colors.grey, // 텍스트 색상 회색
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+      );
+}
 TabBar get _tabBar =>
     const TabBar(
       tabs: [
