@@ -9,11 +9,10 @@ class EventPage extends StatefulWidget{
   EventPageHome createState() => EventPageHome();
 }
 
-
 class EventPageHome extends State<EventPage> with TickerProviderStateMixin{
-
   static final GlobalKey<ScaffoldState> globalKey = GlobalKey();
   final PageController pageController = PageController(initialPage: 1);
+  final ScrollController _scrollController = ScrollController();
   late final TabController tabController;
   bool _expanded = false;
 
@@ -27,13 +26,12 @@ class EventPageHome extends State<EventPage> with TickerProviderStateMixin{
 
   }
 
-
   @override
   void dispose() {
+    pageController.dispose();
+    tabController.dispose();
     super.dispose();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -42,399 +40,328 @@ class EventPageHome extends State<EventPage> with TickerProviderStateMixin{
 
     return Scaffold(
       key: globalKey,
-
-      drawer: MenuDrawer(context),
-
       appBar: AppBar(
-        leading: BackButton(),
+        leading: const BackButton(),
         actions: <Widget>[
-          IconButton(onPressed: (){}, icon: Icon(Icons.search))
+          IconButton(onPressed: (){}, icon: const Icon(Icons.search))
         ],
       ),
-      body: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-        child:  Padding(
-          padding: const EdgeInsets.fromLTRB(2, 2, 2, 2),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+      body: SingleChildScrollView(
+        controller: _scrollController,
+        child: Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+          child:  Padding(
+            padding: const EdgeInsets.fromLTRB(2, 2, 2, 2),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
 
+                    //여기다가
 
-
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-
-
-
-                  //여기다가
-
-
-
-                  SizedBox(
-                    width: widths - 300,
-                  ),
-                  Text(
-                      '30 days left'),
-                  //=> 시간 들어가는 부분(영국 표준 협정시 기준으로 로직을 계산해서 넣을것)
-                ],
-              ),
-
-
-
-
-
-
-
-              //서버에서 받아온 내용에서, 사진이 없으면, 따로 쳐내는 코드 넣을것.
-
-              Container(),
-
-              Padding(padding:  const EdgeInsets.all(5.0),
-
-                child:    ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child:  Image.network('https://hidamarirhodonite.kirara.ca/spread/200297.png'),
+                    SizedBox(
+                      width: widths - 300,
+                    ),
+                    Text(
+                        '30 days left'),
+                    //=> 시간 들어가는 부분(영국 표준 협정시 기준으로 로직을 계산해서 넣을것)
+                  ],
                 ),
+                //서버에서 받아온 내용에서, 사진이 없으면, 따로 쳐내는 코드 넣을것.
+                Container(),
+                Padding(padding:  const EdgeInsets.all(5.0),
 
-              ),
+                  child:    ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child:  Image.network('https://hidamarirhodonite.kirara.ca/spread/200297.png'),
+                  ),
 
-              Center(child: Text('Monitor GirlFreind 2023',style: TextStyle(fontSize: 30),),),
+                ),
+                Center(child: Text('Monitor GirlFreind 2023',style: TextStyle(fontSize: 20),),),
+                Divider(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                  PopupMenuButton(
+                    icon: Row(
+                      children: [
+                        Text(value),
+                        const Icon(Icons.expand_more_outlined),
+                      ],
+                    ),
+                    onSelected: (value) {
+                      // your logic
+                    },
+                    itemBuilder: (BuildContext bc) {
+                      return  [
+                        PopupMenuItem(
+                          child: Text("Overview"),
+                          value: 'Overview',
+                          onTap: (){
+                            setState(() {
+                              value = 'Overview';
+                            });
 
+                          },
+                        ),
+                        PopupMenuItem(
+                          child: Text("Participants(346)"),
+                          value: 'Participants(346)',
+                          onTap: (){
 
-              Divider(),
+                            setState(() {
+                              value = 'Participants';
+                            });
+                          },
+                        ),
+                        PopupMenuItem(
+                          child: Text("Rules"),
+                          value: 'Rules',
+                          onTap: (){
 
+                            setState(() {
+                              value = 'Rules';
+                            });
+                          },
+                        ),
 
+                        PopupMenuItem(
+                          child: Text("Project gallery"),
+                          value: 'Project gallery',
+                          onTap: (){
 
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-
-                Text(value),
-
-                PopupMenuButton(
-
-                  icon: const Icon(Icons.expand_more_outlined),
-                  onSelected: (value) {
-                    // your logic
-                  },
-                  itemBuilder: (BuildContext bc) {
-                    return  [
-                      PopupMenuItem(
-                        child: Text("Overview"),
-                        value: 'Overview',
-                        onTap: (){
-
-
-                          setState(() {
-                            value = 'Overview';
-                          });
-
-                        },
-                      ),
-                      PopupMenuItem(
-                        child: Text("Participants(346)"),
-                        value: 'Participants(346)',
-                        onTap: (){
-
-                          setState(() {
-                            value = 'Participants';
-                          });
-                        },
-                      ),
-                      PopupMenuItem(
-                        child: Text("Rules"),
-                        value: 'Rules',
-                        onTap: (){
-
-                          setState(() {
-                            value = 'Rules';
-                          });
-                        },
-                      ),
-
-                      PopupMenuItem(
-                        child: Text("Project gallery"),
-                        value: 'Project gallery',
-                        onTap: (){
-
-                          setState(() {
-                            value = 'Project';
-                          });
-                        },
-                      )
-                    ];
-                  },
-                )
+                            setState(() {
+                              value = 'Project';
+                            });
+                          },
+                        )
+                      ];
+                    },
+                  )
+                ],
+                ),
+                Divider(),
+                value == 'Overview' ? eventInfo(context) : value == 'Participants' ? participantsInfo(context) : value == 'Rules' ? RulesInfo(context) : value == 'Project' ? projectInfo(context): Container(child: Text('error'),)
               ],
-              ),
-
-              Divider(),
-
-
-              value == 'Overview' ? eventInfo(context) : value == 'Participants' ? participantsInfo(context) : value == 'Rules' ? RulesInfo(context) : value == 'Project' ? projectInfo(context): Container(child: Text('error'),)
-
-
-
-
-
-              
-
-
-
-
-
-
-
-
-
-
-
-            ],
+            ),
           ),
         ),
       )
-
-
-
-
     );
 
   }
-
-
-
 }
-
-
 
 Widget projectInfo(BuildContext context){
 
-  return Expanded(
-    child:  ListView.separated(
-      scrollDirection: Axis.vertical,
-
-      //shrinkWrap: true,
-      padding: const EdgeInsets.all(2.0),
-      itemCount:10,
-      itemBuilder: (BuildContext context, int index){
-        var widths = MediaQuery.of(context).size.width;
-        var heights = MediaQuery.of(context).size.height;
-
-        return GestureDetector(
-            onTap: () {
-
-            },
-            child: Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-              child:  Stack(
-
-                children: <Widget>[
-
-
-                  Image.network('https://hidamarirhodonite.kirara.ca/spread/200297.png'),
-
-                  Positioned(
-                    child: Container(
+  return ListView.separated(
+    scrollDirection: Axis.vertical,
+    shrinkWrap: true,
+    physics: const NeverScrollableScrollPhysics(),
+    padding: const EdgeInsets.all(2.0),
+    itemCount: 2,
+    itemBuilder: (BuildContext context, int index){
+      var widths = MediaQuery.of(context).size.width;
+      var heights = MediaQuery.of(context).size.height;
+      return GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => EventPage()));
+          },
+          child: Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+            child: Stack(
+              children: <Widget>[
+                ///배경 이미지
+                Image.asset('assets/morilogo.png'),
+                ///하단을 뿌옇게
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: 90, // 뿌옇게 처리할 영역의 높이
                     decoration: BoxDecoration(
-                        gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.black54, Colors.black87])
-                    ),
-
-
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-
-                      children:
-                    <Widget>[
-
-
-                      Text('hello',style: TextStyle(color: Colors.white,fontSize: 30)),
-                      Text('By embodying characters on the screen and making them feel something, I empathize with ...',style: TextStyle(color: Colors.white70)),
-                      Row(
-                        children: <Widget>[
-                          Text('Logan',style : TextStyle(color: Colors.white)),
-
-
-                        Positioned(
-                          child:
-                        Row(
-                          children: <Widget>[
-                            Icon(Icons.favorite_border_outlined, color: Colors.white,),
-                            Icon(Icons.message_outlined, color: Colors.white,),
-                          ],
-                        ),
-                          right: 0,
-                        ),
-
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [
+                          Colors.grey.withOpacity(1), // 하단은 더 뿌옇게
+                          Colors.grey.withOpacity(0.0), // 상단은 투명하게
                         ],
-                      )
-
-
-
-                    ],
+                      ),
                     ),
                   ),
+                ),
+                ///별 아이콘
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: Image.asset('assets/icons/star1.png', width: 40,),
+                ),
+                ///대회 제목, 대회 내용, 어워드, 좋아요, 댓글
+                Positioned(
+                    bottom: 10,
+                    left: 10,
+                    right: 10,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Screen Character',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold, // 볼드 처리
+                            fontSize: 16, // 폰트 사이즈 12
+                          ),
+                        ),
+                        SizedBox(
+                          width: widths*0.84,
+                          child: Text(
+                            'By embodying characters on the screen and making them feel something, I empathize with ...',
+                            maxLines: 2, // 최대 줄 수를 2로 설정
+                            overflow: TextOverflow.ellipsis, // 오버플로우 발생 시 '...'로 처리
+                            style: TextStyle(
+                              color: Colors.grey, // 텍스트 색상을 회색으로 설정
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: RichText(
+                                text: TextSpan(
+                                  style: TextStyle(fontSize: 14), // 기본 폰트 사이즈 14
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: 'Road-IL 2023',
+                                      style: TextStyle(fontWeight: FontWeight.bold), // 'Road-IL 2023' 볼드 처리
+                                    ),
+                                    TextSpan(
+                                      text: ' Winner',
+                                      style: TextStyle(fontWeight: FontWeight.normal), // ' Winner' 일반 체중
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const Icon(Icons.favorite),
+                            const SizedBox(width: 3,),
+                            Text('2'),
+                            const SizedBox(width: 6,),
+                            const Icon(Icons.chat_bubble),
+                            const SizedBox(width: 3,),
+                            Text('2'),
+                          ],
+                        )
+                      ],
+                    ))
+              ],
+            ),
+          )
+      );
 
-                  bottom: 0,
-
-                  )
 
 
+    },
+    separatorBuilder: (BuildContext context, int index) {
+      return Container();
+    },
 
 
-                ],
-
-
-              )
-            )
-        );
-
-
-
-      },
-      separatorBuilder: (BuildContext context, int index) {
-        return Container();
-      },
-
-
-    ),
   );
-
-
-
 
 }
 
-
 Widget participantsInfo(BuildContext context){
 
-  return Expanded(
-    child:  ListView.separated(
-      scrollDirection: Axis.vertical,
+  return ListView.separated(
+    scrollDirection: Axis.vertical,
+    shrinkWrap: true,
+    physics: const NeverScrollableScrollPhysics(),
+    padding: const EdgeInsets.all(2.0),
+    itemCount:10,
+    itemBuilder: (BuildContext context, int index){
+      var widths = MediaQuery.of(context).size.width;
+      var heights = MediaQuery.of(context).size.height;
 
-      //shrinkWrap: true,
-      padding: const EdgeInsets.all(2.0),
-      itemCount:10,
-      itemBuilder: (BuildContext context, int index){
-        var widths = MediaQuery.of(context).size.width;
-        var heights = MediaQuery.of(context).size.height;
+      return GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>EventPage()));
+          },
+          child: Card(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+            child:  Padding(
+              padding: const EdgeInsets.fromLTRB(2, 2, 2, 2),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
 
-        return GestureDetector(
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>EventPage()));
-            },
-            child: Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-              child:  Padding(
-                padding: const EdgeInsets.fromLTRB(2, 2, 2, 2),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
+                  //서버에서 받아온 내용에서, 사진이 없으면, 따로 쳐내는 코드 넣을것.
 
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 75,
+                        width: 75,
 
+                        child:   Padding(
 
+                          padding:  const EdgeInsets.all(5.0),
 
-
-
-                    //서버에서 받아온 내용에서, 사진이 없으면, 따로 쳐내는 코드 넣을것.
-
-
-
-                    Row(
-
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-
-                        SizedBox(
-                          height: 75,
-                          width: 75,
-
-                          child:   Padding(
-
-                            padding:  const EdgeInsets.all(5.0),
-
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(180),
-                              child:  Image.network('https://dcjnmis8jxmbl.cloudfront.net/upload/image/member/thumbnail/2022/01/12/3Dwra57Bjvhcqsuy.webp'),
-                            ),
-
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(180),
+                            child:  Image.network('https://dcjnmis8jxmbl.cloudfront.net/upload/image/member/thumbnail/2022/01/12/3Dwra57Bjvhcqsuy.webp'),
                           ),
                         ),
+                      ),
+                      (index == 0) ? const Text('Host', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),) : const Text(''),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(5,5,5,5),
+
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text('nickname',style: TextStyle(fontSize: 20),),
+
+                        Row(children: <Widget>[
+
+                          Padding( padding: const EdgeInsets.fromLTRB(0,5,10,2),
+                            child:
+                            Text('2 PROJECTS'),),
+
+                          Padding(  padding: const EdgeInsets.fromLTRB(0,5,10,2),
+                            child:
+                            Text('2 ACHIEVEMENT'),),
+
+                          Padding(  padding: const EdgeInsets.fromLTRB(0,5,10,2),
+                            child:
+                            Text('2 BADGES'),),
 
 
-                        Text('Host'),
-
+                        ],)
 
                       ],
-                    ),
+                    )
+                  ),
 
-
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(5,5,5,5),
-
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text('nickname',style: TextStyle(fontSize: 20),),
-
-                          Row(children: <Widget>[
-
-                            Padding( padding: const EdgeInsets.fromLTRB(0,5,10,2),
-                              child:
-                              Text('2 PROJECTS'),),
-
-                            Padding(  padding: const EdgeInsets.fromLTRB(0,5,10,2),
-                              child:
-                              Text('2 ACHIEVEMENT'),),
-
-                            Padding(  padding: const EdgeInsets.fromLTRB(0,5,10,2),
-                              child:
-                              Text('2 BADGES'),),
-
-
-                          ],)
-
-                        ],
-                      )
-                    ),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                  ],
-                ),
+                ],
               ),
-            )
-        );
+            ),
+          )
+      );
+    },
+    separatorBuilder: (BuildContext context, int index) {
+      return Container();
+    },
 
-
-
-      },
-      separatorBuilder: (BuildContext context, int index) {
-        return Container();
-      },
-
-
-    ),
   );
-
-
-
 
 }
 
@@ -449,65 +376,50 @@ Widget RulesInfo(BuildContext context){
       crossAxisAlignment: CrossAxisAlignment.start,
 
       children: <Widget>[
-        Divider(),
-
-        Padding(  padding: const EdgeInsets.fromLTRB(5,5,5,5),
+        Padding(  padding: const EdgeInsets.all(20),
           child: Text('I want a picture of my monitor girlfriend. It is free form. Please refer to the ‘Prize’ section below for the prize list.'),),
-
         Divider(),
+        Padding(
+          padding: const EdgeInsets.all(12),
+          child: Text('PRIZES',style: TextStyle(fontSize: 20),),
+        ),
 
-
-
-
-
-
-
-        Text('PRIZES',style: TextStyle(fontSize: 20),),
-
-        Padding(padding: const EdgeInsets.fromLTRB(20,5,5,5),
-            child: Column(children: <Widget>[
-
+        Padding(padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
               Text('First place'),
-              Text('＄10,000'),
+              Text('\$ 10,000'),
             ],)),
 
         Padding(padding: const EdgeInsets.fromLTRB(20,5,5,5),
             child: Column(children: <Widget>[
 
               Text('2nd place'),
-              Text('＄50,000'),
+              Text('\$ 50,000'),
             ],)),
 
         Padding(padding: const EdgeInsets.fromLTRB(20,5,5,5),
             child: Column(children: <Widget>[
-
-
               Text('3rd place'),
-              Text('＄30,000'),
+              Text('\$ 30,000'),
             ],)),
 
+        Padding(
+          padding: const EdgeInsets.all(12),
+          child: Text('JUDGIND CRITERIA',style: TextStyle(fontSize: 20)),
+        ),
 
-
-
-        Text('JUDGIND CRITERIA',style: TextStyle(fontSize: 20)),
-
-        Padding(padding: const EdgeInsets.fromLTRB(20,5,5,5),
-            child: Column(children: <Widget>[
-
-
+        Padding(padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
               Text('Beautifully'),
               Text('Soundly'),
               Text('Doing the best'),
             ],)),
 
-
-
-
-
       ]
-
-
-
 
   );
 }
@@ -516,124 +428,82 @@ Widget RulesInfo(BuildContext context){
 Widget eventInfo(BuildContext context){
   
   return Column(
-
     crossAxisAlignment: CrossAxisAlignment.start,
 
     children: <Widget>[
-      Divider(),
-      Text('OCT 30 - DEC1, 2023'),
-
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-
-
-
-
-        Text('＄10,000 in prizes'),
-        Text('1001 participants')
-      ],
+      Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('OCT 30 - DEC1, 2023',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),),
+            SizedBox(height: 10,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                RichText(
+                  text: TextSpan(
+                    style: const TextStyle(fontSize: 16.0, color: Colors.black),
+                    children: <TextSpan>[
+                      TextSpan(text: '\$ '),
+                      TextSpan(text: '10,000', style: TextStyle(fontWeight: FontWeight.bold)),
+                      TextSpan(text: ' in prizes'),
+                    ],
+                  ),
+                ),
+                RichText(
+                  text: TextSpan(
+                    style: const TextStyle(fontSize: 16.0, color: Colors.black),
+                    children: <TextSpan>[
+                      TextSpan(text: '1001', style: TextStyle(fontWeight: FontWeight.bold)),
+                      TextSpan(text: ' participants'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
 
       Divider(),
 
-
-      Text('I want a picture of my monitor girlfriend. It is free form. Please refer to the ‘Prize’ section below for the prize list.'),
+      Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Text('I want a picture of my monitor girlfriend. It is free form. Please refer to the ‘Prize’ section below for the prize list.'),
+      ),
       Divider(),
 
-      Text('PRIZES',style: TextStyle(fontSize: 20),),
-
-      Text('First place'),
-      Text('＄10,000'),
-      Text('2nd place'),
-      Text('＄50,000'),
-      Text('3rd place'),
-      Text('＄30,000'),
+      Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Text('PRIZES',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+      ),
 
 
+      Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('First place'),
+            Text('＄10,000'),
+            SizedBox(height: 8,),
+            Text('2nd place'),
+            Text('＄50,000'),
+            SizedBox(height: 8,),
+            Text('3rd place'),
+            Text('＄30,000'),
+            SizedBox(height: 8,),
+          ],
+        ),
+      ),
     ]
-    
-
-    
-    
   );
-} 
-
-
-Widget MenuDrawer(BuildContext context){
-
-  return Drawer(
-    child: ListView(
-      padding: EdgeInsets.zero,
-      children: <Widget>[
-        GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: UserAccountsDrawerHeader(
-            //Drawer 헤드부분 생성 후 설정부분
-
-            currentAccountPicture: Row(
-
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(180),
-                  child:  Image.network('https://dcjnmis8jxmbl.cloudfront.net/upload/image/member/thumbnail/2022/01/12/3Dwra57Bjvhcqsuy.webp'),
-                ),
-
-
-              ],
-            ),
-
-
-
-
-            accountName: Text('hello'),
-            accountEmail: Text('@helloMail'),
-            // onDetailsPressed: () {
-            //   print('arrow is clicked');
-            // },
-            // 지금 Drawer 헤드부분 안에 있으니 -> 헤드부분 디자인 변경
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Color(0xff8AEBF2), Color(0xff9887FE)]),
-              borderRadius: BorderRadius.only(
-                //borderRadius -> 모서리 디자인 변경
-                  bottomLeft: Radius.circular(16.0),
-                  //Radius.circular -> 모서리 둥글게
-                  bottomRight: Radius.circular(16.0)),
-            ),
-          ),
-        ),
-
-        ListTile(
-          leading: Icon(
-            Icons.account_circle_outlined,
-          ),
-          title: const Text('Profile'),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-
-        ListTile(
-          leading: Icon(
-              Icons.settings
-          ),
-          title: const Text('setting'),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-      ],
-    ),
-  );
-
 }
-
-
-
-
 
 TabBar get _tabBar => const TabBar(
   tabs: [

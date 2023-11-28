@@ -211,7 +211,7 @@ Widget MenuDrawer(BuildContext context){
           ),
           title: const Text('Profile'),
           onTap: () {
-            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>ProfilePage()));
           },
         ),
         ///설정 버튼
@@ -262,7 +262,7 @@ Widget listViewer(){
 
         return GestureDetector(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => EventPage()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const EventPage()));
           },
           child: Card(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
