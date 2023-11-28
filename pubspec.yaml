@@ -43,6 +43,7 @@ dependencies:
   get_it: ^7.6.4 #Accessing service objects
   image_picker: ^1.0.4
   intl: ^0.18.1
+  provider: ^6.1.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -68,6 +69,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -23,10 +23,8 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
 
   @override
   void initState(){
-
     tabController = TabController(length: 3, vsync: this);
     super.initState();
-
   }
 
 
@@ -41,9 +39,7 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
   Widget build(BuildContext context) {
     return Scaffold(
       key: globalKey,
-
       drawer: MenuDrawer(context),
-
       body: NestedScrollView(
         floatHeaderSlivers: true,
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled){
@@ -156,11 +152,11 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
 
 
 Widget MenuDrawer(BuildContext context){
-
   return Drawer(
     child: ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
+        ///프로필
         GestureDetector(
           onTap: () {
             Navigator.pop(context);
@@ -208,7 +204,7 @@ Widget MenuDrawer(BuildContext context){
             ),
           ),
         ),
-
+        ///프로필 버튼
         ListTile(
           leading: Icon(
             Icons.account_circle_outlined,
@@ -218,14 +214,14 @@ Widget MenuDrawer(BuildContext context){
             Navigator.pop(context);
           },
         ),
-
+        ///설정 버튼
         ListTile(
           leading: Icon(
            Icons.settings
           ),
           title: const Text('setting'),
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>SettingPage()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingPage()));
           },
         ),
         ///약관 스크린 테스트 용
