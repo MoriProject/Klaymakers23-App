@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:morimori/pages/EventApply.dart';
 
 
 class EventPage extends StatefulWidget{
@@ -17,6 +18,7 @@ class EventPageHome extends State<EventPage> with TickerProviderStateMixin{
   bool _expanded = false;
 
   var value = 'Overview';
+  //프로필에 보이는 페이지는, 내게 보이는 해커톤 페이지
 
   @override
   void initState(){
@@ -64,8 +66,7 @@ class EventPageHome extends State<EventPage> with TickerProviderStateMixin{
                     SizedBox(
                       width: widths - 300,
                     ),
-                    Text(
-                        '30 days left'),
+                    Text('30 days left'),
                     //=> 시간 들어가는 부분(영국 표준 협정시 기준으로 로직을 계산해서 넣을것)
                   ],
                 ),
@@ -498,9 +499,23 @@ Widget eventInfo(BuildContext context){
             Text('3rd place'),
             Text('＄30,000'),
             SizedBox(height: 8,),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+
+                TextButton(onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  const EventApplyPage()));
+
+                }, style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.lightBlueAccent)), child: Text('Apply Now',style: TextStyle(color: Colors.white),) )
+              ],
+            )
           ],
         ),
       ),
+
+
+
     ]
   );
 }
