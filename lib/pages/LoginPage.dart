@@ -55,6 +55,7 @@ class _LoginPageState extends State<LoginPage> {
           final result = await isUserRegisterd(address);
           print('isUserRegisterd : $result');
           if(result == "User not found") {
+            if (!context.mounted) return;
             Navigator.push(context,
                 MaterialPageRoute(builder: (BuildContext context) {
                   return const EmailNicknameScreen();
@@ -65,77 +66,113 @@ class _LoginPageState extends State<LoginPage> {
           } else {
             Map<String, dynamic> res = json.decode(result);
             var data = UserData.fromJson(res);
-            if(data._userId != null) {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (BuildContext context) {
-                    return const MainPage();
-                  }));
+            if(data.userId != null && data.username != null && data.email != null) {
+              if (!context.mounted) return;
+              Provider.of<UserModel>(context, listen: false).inputEmail(data.email!);
+              Provider.of<UserModel>(context, listen: false).inputNickname(data.username!);
+              Provider.of<UserModel>(context, listen: false).inputAddressFromServer(data.walletAddress!);
+              Provider.of<UserModel>(context, listen: false).printData();
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ListenableProvider<UserModel>.value(
+                        value: Provider.of<UserModel>(context),
+                        child: const MainPage(),
+                      )));
             } else {
+              if (!context.mounted) return;
               ShowSnackBar.buildSnackbar(context, 'error', true);
             }
           }
         }
       },
-      child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(50),
-          child: Center(
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 100,
-                ),
-                //로고
-                Image.asset(
-                  'assets/morilogo.png',
-                  width: 170,
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                //Sign in with your wallet
-                const Text(
-                  'Sign in with your wallet',
-                  style: TextStyle(
-                      color: Colors.black,
-                      height: 1.4,
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.w800,
-                      fontFamily: 'NanumSquareRegular'),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                //Sign in using one of the available..
-                Flexible(
-                  child: RichText(
-                    overflow: TextOverflow.clip,
-                    maxLines: 5,
-                    text: const TextSpan(
-                      style: TextStyle(
-                          color: Colors.black,
-                          height: 1.4,
-                          fontSize: 14.0,
-                          fontFamily: 'NanumSquareRegular'),
-                      text:
-                          'Sign in using one of the available wallet providers, or create a new wallet',
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          body: Padding(
+            padding: const EdgeInsets.all(50),
+            child: Center(
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 100,
+                  ),
+                  //로고
+                  Image.asset(
+                    'assets/morilogo.png',
+                    width: 170,
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  //Sign in with your wallet
+                  const Text(
+                    'Sign in with your wallet',
+                    style: TextStyle(
+                        color: Colors.black,
+                        height: 1.4,
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.w800,
+                        fontFamily: 'NanumSquareRegular'),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  //Sign in using one of the available..
+                  Flexible(
+                    child: RichText(
+                      overflow: TextOverflow.clip,
+                      maxLines: 5,
+                      text: const TextSpan(
+                        style: TextStyle(
+                            color: Colors.black,
+                            height: 1.4,
+                            fontSize: 14.0,
+                            fontFamily: 'NanumSquareRegular'),
+                        text:
+                            'Sign in using one of the available wallet providers, or create a new wallet',
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                ///metamask 로그인 버튼
-                GestureDetector(
-                  onTap: () {
-                    print('metamask login button clicked');
-                    // MetaMask 인증 이벤트 발생
-                    BlocProvider.of<MetaMaskAuthBloc>(context).add(
-                      MetamaskAuthEvent(signatureFromBackend: signatureFromBackend),
-                    );
-                    buildShowDialog(context);
-                  },
-                  child: Container(
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  ///metamask 로그인 버튼
+                  GestureDetector(
+                    onTap: () {
+                      print('metamask login button clicked');
+                      // MetaMask 인증 이벤트 발생
+                      BlocProvider.of<MetaMaskAuthBloc>(context).add(
+                        MetamaskAuthEvent(signatureFromBackend: signatureFromBackend),
+                      );
+                      buildShowDialog(context);
+                    },
+                    child: Container(
+                      height: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(Radius.circular(90)),
+                        border: Border.all(color: Colors.black45),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Image.asset('assets/metamasklogo.png'),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          const Text('Sign in with MetaMask'),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  //WalletConnect 로그인 버튼
+                  Container(
                     height: 60,
                     decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(90)),
@@ -147,87 +184,66 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(
                           width: 20,
                         ),
-                        Image.asset('assets/metamasklogo.png'),
+                        Image.asset('assets/connectwalletlogo.png'),
                         const SizedBox(
                           width: 20,
                         ),
-                        const Text('Sign in with MetaMask'),
+                        const Text('Sign in with WalletConnect'),
                       ],
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                //WalletConnect 로그인 버튼
-                Container(
-                  height: 60,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(90)),
-                    border: Border.all(color: Colors.black45),
+                  const SizedBox(
+                    height: 16,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const SizedBox(
-                        width: 20,
+                  //We do not own your private keys and cannot access your assets without your confirmation.
+                  Flexible(
+                    child: RichText(
+                      overflow: TextOverflow.clip,
+                      maxLines: 5,
+                      text: const TextSpan(
+                        style: TextStyle(
+                            color: Colors.black,
+                            height: 1.4,
+                            fontSize: 12.0,
+                            fontFamily: 'NanumSquareRegular'),
+                        text:
+                            'We do not own your private keys and cannot access your assets without your confirmation.',
                       ),
-                      Image.asset('assets/connectwalletlogo.png'),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      const Text('Sign in with WalletConnect'),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                //We do not own your private keys and cannot access your assets without your confirmation.
-                Flexible(
-                  child: RichText(
-                    overflow: TextOverflow.clip,
-                    maxLines: 5,
-                    text: const TextSpan(
-                      style: TextStyle(
-                          color: Colors.black,
-                          height: 1.4,
-                          fontSize: 12.0,
-                          fontFamily: 'NanumSquareRegular'),
-                      text:
-                          'We do not own your private keys and cannot access your assets without your confirmation.',
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MainPage()));
-                  },
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'I will sign in later',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Icon(Icons.arrow_forward_ios_rounded, size: 16),
-                    ],
+                  const SizedBox(
+                    height: 16,
                   ),
-                ),
-              ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ListenableProvider<UserModel>.value(
+                                value: Provider.of<UserModel>(context),
+                                child: const MainPage(),
+                              )));
+                    },
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'I will sign in later',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Icon(Icons.arrow_forward_ios_rounded, size: 16),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

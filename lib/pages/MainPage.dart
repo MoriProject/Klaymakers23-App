@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:morimori/pages/EventMakingPage.dart';
 import 'package:morimori/pages/email_nickname_screen.dart';
 import 'package:morimori/pages/terms_screen.dart';
+import 'package:provider/provider.dart';
 
+import '../models/user_model.dart';
 import 'EventPage.dart';
 import 'ProfilePage.dart';
 import 'SettingPage.dart';
@@ -135,20 +137,55 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue,
         onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) =>EventMakingPage()));
+          Provider.of<UserModel>(context, listen: false).printData();
+          var userAddress = Provider.of<UserModel>(context, listen: false).address;
+          print('userAddress : $userAddress');
+          if (userAddress == null) {
+            _showHackathonConfirmationDialog(context);
+          } else {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => EventMakingPage()));
+          }
         },
         child: const Icon(
           Icons.add,
         ),
       ),
-
-
     );
-
   }
+}
 
-
-
+void _showHackathonConfirmationDialog(BuildContext context) async {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Are you sureyou want to create your hackation?'),
+      content: RichText(
+        text: const TextSpan(
+          style: TextStyle(color: Colors.black), // 기본 텍스트 색상
+          children: <TextSpan>[
+            TextSpan(text: 'Once the amount has been withdrawn, '),
+            TextSpan(
+              text: 'it cannot be returned!',
+              style: TextStyle(color: Colors.red), // "it cannot be returned!" 부분의 색상을 빨간색으로 설정
+            ),
+          ],
+        ),
+      )
+      ,
+      actions: <Widget>[
+        TextButton(
+          child: const Text('Cancel'),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        TextButton(
+          child: const Text('Create'),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    ),
+  );
 }
 
 

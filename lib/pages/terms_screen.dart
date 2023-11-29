@@ -76,7 +76,7 @@ class _TermsScreenState extends State<TermsScreen> {
               child: ElevatedButton(
                 onPressed: _agreedToTerms
                     ? () async {
-                  var provider = Provider.of<User>(context, listen: false);
+                  var provider = Provider.of<UserModel>(context, listen: false);
                       List<String> networkIdx = List.filled(3, '0', growable: false);
                       const storage = FlutterSecureStorage();
 
@@ -100,10 +100,13 @@ class _TermsScreenState extends State<TermsScreen> {
                             context, "Server Error");
                       }
 
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (BuildContext context) {
-                            return const MainPage();
-                          }));
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ListenableProvider<UserModel>.value(
+                            value: Provider.of<UserModel>(context),
+                            child: const MainPage(),
+                          )));
                 }
                     : null,
                 child: const Text('Next'),
