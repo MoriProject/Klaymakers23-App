@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:morimori/pages/EventMakingPage.dart';
+import 'package:morimori/pages/LoginPage.dart';
 import 'package:morimori/pages/email_nickname_screen.dart';
 import 'package:morimori/pages/terms_screen.dart';
 import 'package:provider/provider.dart';
@@ -141,7 +142,7 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
           var userAddress = Provider.of<UserModel>(context, listen: false).address;
           print('userAddress : $userAddress');
           if (userAddress == null) {
-            _showHackathonConfirmationDialog(context);
+            _showHackathonLoginDialog(context);
           } else {
             Navigator.push(context, MaterialPageRoute(builder: (context) => EventMakingPage()));
           }
@@ -154,33 +155,32 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
   }
 }
 
-void _showHackathonConfirmationDialog(BuildContext context) async {
+void _showHackathonLoginDialog(BuildContext context) async {
   showDialog(
     context: context,
-    builder: (context) => AlertDialog(
-      title: const Text('Are you sureyou want to create your hackation?'),
+    builder: (dialogContext) => AlertDialog(
+      title: const Text('Want to host a hackathon?'),
       content: RichText(
         text: const TextSpan(
-          style: TextStyle(color: Colors.black), // 기본 텍스트 색상
+          style: TextStyle(color: Colors.black, fontSize: 16), // 기본 텍스트 색상
           children: <TextSpan>[
-            TextSpan(text: 'Once the amount has been withdrawn, '),
-            TextSpan(
-              text: 'it cannot be returned!',
-              style: TextStyle(color: Colors.red), // "it cannot be returned!" 부분의 색상을 빨간색으로 설정
-            ),
+            TextSpan(text: 'Sign in with your wallet'),
           ],
         ),
-      )
-      ,
+      ),
       actions: <Widget>[
         TextButton(
           child: const Text('Cancel'),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            Navigator.of(dialogContext).pop();
+          },
         ),
         TextButton(
-          child: const Text('Create'),
+          child: const Text('Login'),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.of(dialogContext).pop();
+            Navigator.of(context).pop();
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
           },
         ),
       ],
