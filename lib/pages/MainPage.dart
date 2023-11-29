@@ -4,18 +4,19 @@ import 'package:morimori/pages/LoginPage.dart';
 import 'package:morimori/pages/email_nickname_screen.dart';
 import 'package:morimori/pages/terms_screen.dart';
 import 'package:provider/provider.dart';
-
 import '../models/user_model.dart';
 import '../ui/features/widgets/custom/need_login_dialog.dart';
 import 'EventPage.dart';
 import 'ProfilePage.dart';
+import 'SearchPage.dart';
 import 'SettingPage.dart';
-
 import 'package:http/http.dart' as http;
 
 
 
 class MainPage extends StatefulWidget{
+
+
 
   const MainPage({Key? key}) : super(key: key);
 
@@ -28,6 +29,7 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
   static final GlobalKey<ScaffoldState> mainPageGlobalKey = GlobalKey();
   final PageController pageController = PageController(initialPage: 1);
   late final TabController tabController;
+  var TextEditController = TextEditingController();
 
   @override
   void initState(){
@@ -61,13 +63,18 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
               ),
               backgroundColor: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
 
-              title: TextField(),
+              title: TextField(
+                  controller: TextEditController,
+
+              ),
               
               actions: [
 
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-                  child: Icon(Icons.search),
+                  child: IconButton(onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage(searchData: TextEditController.text,)));
+                  }, icon: const Icon(Icons.search)),
                 ),
                 
               ],
