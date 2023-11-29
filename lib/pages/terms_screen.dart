@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 
+import '../models/user_model.dart';
+import '../ui/features/widgets/custom/show_snack_bar.dart';
 import 'MainPage.dart';
+
+import 'package:http/http.dart' as http;
+
 
 class TermsScreen extends StatefulWidget {
   const TermsScreen({super.key});
@@ -68,11 +75,35 @@ class _TermsScreenState extends State<TermsScreen> {
               padding: const EdgeInsets.all(16.0),
               child: ElevatedButton(
                 onPressed: _agreedToTerms
-                    ? () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (BuildContext context) {
-                        return const MainPage();
-                      }));
+                    ? () async {
+                  var provider = Provider.of<User>(context, listen: false);
+                      List<String> networkIdx = List.filled(3, '0', growable: false);
+                      const storage = FlutterSecureStorage();
+
+                      networkIdx[0] = (await storage.read(key: 'address'))!;
+                      networkIdx[1] = provider.email;
+                      networkIdx[2] = provider.nickname;
+                      String result = await postUserRegisterd(networkIdx);
+                      print(result);
+                      if(result == "User registered") {
+                        Navigator.pop(context);
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainPage()));
+                      } else if (result == "Wallet address already registered") {
+                        ShowSnackBar.buildSnackbar(
+                            context, "Wallet address already registered");
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainPage()));
+                      } else if (result == "Internal server error") {
+                        ShowSnackBar.buildSnackbar(
+                            context, "Internal server error");
+                      } else {
+                        ShowSnackBar.buildSnackbar(
+                            context, "Server Error");
+                      }
+
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                            return const MainPage();
+                          }));
                 }
                     : null,
                 child: const Text('Next'),
@@ -81,6 +112,12 @@ class _TermsScreenState extends State<TermsScreen> {
           ],
         ),
       ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Provider.of<User>(context, listen: false).inputAddress();
+      //     print(Provider.of<User>(context, listen: false).address);
+      //   },
+      // ),
     );
   }
   // @override
@@ -103,4 +140,20 @@ class _TermsScreenState extends State<TermsScreen> {
   //     ),
   //   );
   // }
+}
+
+Future<String> postUserRegisterd(List<String> index) async {
+  http.Response response = await http.post(
+      Uri.parse('https://nftmori.shop/api/users/register'),
+      headers: <String, String>{
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: <String, dynamic>{
+        'walletAddress': index[0],
+        'email': index[1],
+        'username': index[2],
+      }
+  );
+  //print(response.body);
+  return response.body;
 }

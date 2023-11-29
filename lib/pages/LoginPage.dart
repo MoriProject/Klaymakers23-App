@@ -30,7 +30,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   BuildContext? dialogContext;
   final String signatureFromBackend = "We are Mori";
 
@@ -51,9 +51,8 @@ class _LoginPageState extends State<LoginPage> {
           hideDialog(dialogContext);
           ShowSnackBar.buildSnackbar(
               context, AppConstants.authenticationSuccessful);
-          final result = await isUserRegisterd(
-              storage.read(key: 'address').toString()
-          );
+          String address = await storage.read(key: 'address') ?? '';
+          final result = await isUserRegisterd(address);
           print('isUserRegisterd : $result');
           if(result == "User not found") {
             Navigator.push(context,
@@ -271,8 +270,9 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 Future<String> isUserRegisterd(String address) async {
+  print('isUserRegisterd : $address');
   http.Response response = await http.get(
-    Uri.parse('https://nftmori.shop/api/users/$address'),
+    Uri.parse('https://nftmori.shop/api/users/${address}'),
     headers: <String, String>{
       'Content-Type': 'application/x-www-form-urlencoded',
     },

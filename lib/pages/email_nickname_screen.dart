@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:morimori/pages/MainPage.dart';
+import 'package:morimori/pages/terms_screen.dart';
+import 'package:provider/provider.dart';
 
+import '../models/user_model.dart';
 import '../ui/features/widgets/custom/show_snack_bar.dart';
 
 class EmailNicknameScreen extends StatefulWidget {
@@ -34,77 +37,81 @@ class _EmailNicknameScreenState extends State<EmailNicknameScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-                'Register Process',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+            Expanded(
+              flex: 1,
+              child: Column(
+                children: [
+                  Text(
+                      'Register Process',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 40,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('email'),
+                      SizedBox(height: 20,),
+                      TextField(
+                        controller: emailTextController,
+                      ),
+                      SizedBox(height: 20,),
+                      Text('nickname'),
+                      SizedBox(height: 20,),
+                      TextField(
+                        controller: nicknameTextController,
+                      ),
+                      Text('이용약관'),
+                    ],
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: 40,),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('email'),
-                SizedBox(height: 20,),
-                TextField(
-                  controller: emailTextController,
-                ),
-                SizedBox(height: 20,),
-                Text('nickname'),
-                SizedBox(height: 20,),
-                TextField(
-                  controller: nicknameTextController,
-                ),
-                Text('이용약관'),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                onPressed:  () {
+                  Provider.of<User>(context, listen: false).inputEmail(emailTextController.text);
+                  Provider.of<User>(context, listen: false).inputNickname(nicknameTextController.text);
+                  Provider.of<User>(context, listen: false).inputAddress();
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const TermsScreen()));
+                },
+                child: const Text('Next'),
+              ),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          List<String> networkIdx = List.filled(3, '0', growable: false);
-          const storage = FlutterSecureStorage();
-
-          networkIdx[0] = storage.read(key: 'address').toString();
-          networkIdx[1] = emailTextController.text;
-          networkIdx[2] = nicknameTextController.text;
-          String result = await isUserRegisterd(networkIdx);
-          print(result);
-          if(result == "User registered") {
-            Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const MainPage()));
-          } else if (result == "Wallet address already registered") {
-            ShowSnackBar.buildSnackbar(
-                context, "Wallet address already registered");
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const MainPage()));
-          } else if (result == "Internal server error") {
-            ShowSnackBar.buildSnackbar(
-                context, "Internal server error");
-          } else {
-            ShowSnackBar.buildSnackbar(
-                context, "Server Error");
-          }
-        },
-        child: const Icon(Icons.navigate_next),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () async {
+      //
+      //     List<String> networkIdx = List.filled(3, '0', growable: false);
+      //     const storage = FlutterSecureStorage();
+      //
+      //     networkIdx[0] = storage.read(key: 'address').toString();
+      //     networkIdx[1] = emailTextController.text;
+      //     networkIdx[2] = nicknameTextController.text;
+      //     String result = await isUserRegisterd(networkIdx);
+      //     print(result);
+      //     if(result == "User registered") {
+      //       Navigator.pop(context);
+      //       Navigator.push(context, MaterialPageRoute(builder: (context) => const MainPage()));
+      //     } else if (result == "Wallet address already registered") {
+      //       ShowSnackBar.buildSnackbar(
+      //           context, "Wallet address already registered");
+      //       Navigator.push(context, MaterialPageRoute(builder: (context) => const MainPage()));
+      //     } else if (result == "Internal server error") {
+      //       ShowSnackBar.buildSnackbar(
+      //           context, "Internal server error");
+      //     } else {
+      //       ShowSnackBar.buildSnackbar(
+      //           context, "Server Error");
+      //     }
+      //   },
+      //   child: const Icon(Icons.navigate_next),
+      // ),
     );
   }
-}
-
-Future<String> isUserRegisterd(List<String> index) async {
-  http.Response response = await http.post(
-    Uri.parse('https://nftmori.shop/api/users/register'),
-    headers: <String, String>{
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: <String, dynamic>{
-      'walletAddress': index[0],
-      'email': index[1],
-      'username': index[2],
-    }
-  );
-  //print(response.body);
-  return response.body;
 }

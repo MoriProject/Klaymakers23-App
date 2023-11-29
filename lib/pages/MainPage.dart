@@ -21,28 +21,25 @@ class MainPage extends StatefulWidget{
 
 
 class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
-  static final GlobalKey<ScaffoldState> globalKey = GlobalKey();
+  static final GlobalKey<ScaffoldState> mainPageGlobalKey = GlobalKey();
   final PageController pageController = PageController(initialPage: 1);
   late final TabController tabController;
 
   @override
   void initState(){
-    tabController = TabController(length: 3, vsync: this);
     super.initState();
+    tabController = TabController(length: 3, vsync: this);
   }
-
 
   @override
   void dispose() {
     super.dispose();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: globalKey,
+      key: mainPageGlobalKey,
       drawer: MenuDrawer(context),
       body: NestedScrollView(
         floatHeaderSlivers: true,
@@ -51,7 +48,7 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
             SliverAppBar(
               leading: GestureDetector(
                 onTap: (){
-                  globalKey.currentState!.openDrawer();
+                  mainPageGlobalKey.currentState!.openDrawer();
                 },
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),

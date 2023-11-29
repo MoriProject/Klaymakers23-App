@@ -71,13 +71,20 @@ class SettingPageHome extends State<SettingPage> with TickerProviderStateMixin {
 
               ),
 
-              Column(children: <Widget>[
-
-                Text('Upload Photo'),
-
-
-
-                Text('Delete Photo'),
+              const Column(children: <Widget>[
+                Text(
+                    'Upload Photo',
+                  style: TextStyle(
+                    color: Colors.blue,
+                  ),
+                ),
+                SizedBox(height: 35,),
+                Text(
+                    'Delete Photo',
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
               ],),
 
 
