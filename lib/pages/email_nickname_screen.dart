@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:morimori/pages/MainPage.dart';
 import 'package:morimori/pages/terms_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../models/user_model.dart';
-import '../ui/features/widgets/custom/show_snack_bar.dart';
 
 class EmailNicknameScreen extends StatefulWidget {
   const EmailNicknameScreen({super.key});

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../ui/upload_loading_widget.dart';
-import 'EventPage.dart';
-import 'MainPage.dart';
 
 class EventApplyPage extends StatefulWidget {
   const EventApplyPage({Key? key}) : super(key: key);
@@ -31,7 +29,6 @@ class EventApplyPageHome extends State<EventApplyPage> with TickerProviderStateM
   final PageController pageController = PageController(initialPage: 1);
 
   late final TabController controller;
-  bool _expanded = false;
 
   var value = 'Main Track';
 

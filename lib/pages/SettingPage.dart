@@ -11,7 +11,6 @@ class SettingPageHome extends State<SettingPage> with TickerProviderStateMixin {
   static final GlobalKey<ScaffoldState> globalKey = GlobalKey();
   final PageController pageController = PageController(initialPage: 1);
   late final TabController tabController;
-  bool _expanded = false;
 
   var value = 'Overview';
 

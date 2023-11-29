@@ -15,7 +15,6 @@ class EventPageHome extends State<EventPage> with TickerProviderStateMixin{
   final PageController pageController = PageController(initialPage: 1);
   final ScrollController _scrollController = ScrollController();
   late final TabController tabController;
-  bool _expanded = false;
 
   var value = 'Overview';
   //프로필에 보이는 페이지는, 내게 보이는 해커톤 페이지

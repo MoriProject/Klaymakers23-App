@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:morimori/pages/WorkInfoPage.dart';
 
-import 'EventPage.dart';
-import 'MainPage.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -16,7 +14,6 @@ class ProfilePageHome extends State<ProfilePage> with TickerProviderStateMixin {
   final PageController pageController = PageController(initialPage: 1);
 
   late final TabController controller;
-  bool _expanded = false;
 
   var value = 'Overview';
 

@@ -7,7 +7,6 @@ import 'package:morimori/pages/MainPage.dart';
 import 'package:morimori/bloc/metamask_auth_bloc.dart';
 import 'package:morimori/bloc/wallet_state.dart';
 import 'package:morimori/pages/email_nickname_screen.dart';
-import 'package:morimori/pages/terms_screen.dart';
 import 'package:morimori/ui/features/widgets/custom/other_custom_widgets.dart';
 import 'package:morimori/ui/features/widgets/custom/show_snack_bar.dart';
 import 'package:morimori/utils/constants/app_constants.dart';
@@ -68,9 +67,7 @@ class _LoginPageState extends State<LoginPage> {
             var data = UserData.fromJson(res);
             if(data.userId != null && data.username != null && data.email != null) {
               if (!context.mounted) return;
-              Provider.of<UserModel>(context, listen: false).inputEmail(data.email!);
-              Provider.of<UserModel>(context, listen: false).inputNickname(data.username!);
-              Provider.of<UserModel>(context, listen: false).inputAddressFromServer(data.walletAddress!);
+              Provider.of<UserModel>(context, listen: false).inputUserInfoFromServer(data);
               Provider.of<UserModel>(context, listen: false).printData();
               Navigator.pushReplacement(
                   context,
@@ -296,73 +293,4 @@ Future<String> isUserRegisterd(String address) async {
 
   //print(response.body);
   return response.body;
-}
-
-class UserData {
-  int? _userId;
-  String? _walletAddress;
-  String? _email;
-  String? _username;
-  String? _createdAt;
-  String? _updatedAt;
-
-  UserData(
-      {int? userId,
-        String? walletAddress,
-        String? email,
-        String? username,
-        String? createdAt,
-        String? updatedAt}) {
-    if (userId != null) {
-      _userId = userId;
-    }
-    if (walletAddress != null) {
-      _walletAddress = walletAddress;
-    }
-    if (email != null) {
-      _email = email;
-    }
-    if (username != null) {
-      _username = username;
-    }
-    if (createdAt != null) {
-      _createdAt = createdAt;
-    }
-    if (updatedAt != null) {
-      _updatedAt = updatedAt;
-    }
-  }
-
-  int? get userId => _userId;
-  set userId(int? userId) => _userId = userId;
-  String? get walletAddress => _walletAddress;
-  set walletAddress(String? walletAddress) => _walletAddress = walletAddress;
-  String? get email => _email;
-  set email(String? email) => _email = email;
-  String? get username => _username;
-  set username(String? username) => _username = username;
-  String? get createdAt => _createdAt;
-  set createdAt(String? createdAt) => _createdAt = createdAt;
-  String? get updatedAt => _updatedAt;
-  set updatedAt(String? updatedAt) => _updatedAt = updatedAt;
-
-  UserData.fromJson(Map<String, dynamic> json) {
-    _userId = json['user_id'];
-    _walletAddress = json['walletAddress'];
-    _email = json['email'];
-    _username = json['username'];
-    _createdAt = json['createdAt'];
-    _updatedAt = json['updatedAt'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_id'] = this._userId;
-    data['walletAddress'] = this._walletAddress;
-    data['email'] = this._email;
-    data['username'] = this._username;
-    data['createdAt'] = this._createdAt;
-    data['updatedAt'] = this._updatedAt;
-    return data;
-  }
 }

@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 
 import 'bloc/metamask_auth_bloc.dart';
 import 'models/user_model.dart';
-import 'pages/MainPage.dart';
 
 void main() {
   initServices();
