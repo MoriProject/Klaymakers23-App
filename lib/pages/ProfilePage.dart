@@ -19,6 +19,7 @@ class ProfilePageHome extends State<ProfilePage> with TickerProviderStateMixin {
 
   var value = 'Overview';
 
+
   int numProjects = 2;
   int numBadges = 2;
   int numAchievements = 1;
