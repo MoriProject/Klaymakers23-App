@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:morimori/pages/WorkInfoPage.dart';
 
 import 'EventPage.dart';
 import 'MainPage.dart';
@@ -108,7 +109,7 @@ Widget eventItem(int num){
       var heights = MediaQuery.of(context).size.height;
       return GestureDetector(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => EventPage()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const WorkInfoPage()));
           },
           child: Card(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),

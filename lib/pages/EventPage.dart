@@ -367,9 +367,6 @@ Widget participantsInfo(BuildContext context){
 }
 
 
-
-
-
 Widget RulesInfo(BuildContext context){
 
   return Column(
@@ -517,6 +514,100 @@ Widget eventInfo(BuildContext context){
 
 
     ]
+  );
+}
+
+
+Widget projectGallery(BuildContext context){
+  return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('OCT 30 - DEC1, 2023',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),),
+              SizedBox(height: 10,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  RichText(
+                    text: TextSpan(
+                      style: const TextStyle(fontSize: 16.0, color: Colors.black),
+                      children: <TextSpan>[
+                        TextSpan(text: '\$ '),
+                        TextSpan(text: '10,000', style: TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(text: ' in prizes'),
+                      ],
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      style: const TextStyle(fontSize: 16.0, color: Colors.black),
+                      children: <TextSpan>[
+                        TextSpan(text: '1001', style: TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(text: ' participants'),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+
+        Divider(),
+
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Text('I want a picture of my monitor girlfriend. It is free form. Please refer to the ‘Prize’ section below for the prize list.'),
+        ),
+        Divider(),
+
+        Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Text('PRIZES',style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+        ),
+
+
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('First place'),
+              Text('＄10,000'),
+              SizedBox(height: 8,),
+              Text('2nd place'),
+              Text('＄50,000'),
+              SizedBox(height: 8,),
+              Text('3rd place'),
+              Text('＄30,000'),
+              SizedBox(height: 8,),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+
+                  TextButton(onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>  const EventApplyPage()));
+
+                  }, style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.lightBlueAccent)), child: Text('Apply Now',style: TextStyle(color: Colors.white),) )
+                ],
+              )
+            ],
+          ),
+        ),
+
+
+
+      ]
   );
 }
 
