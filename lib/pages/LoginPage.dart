@@ -1,15 +1,25 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:morimori/pages/MainPage.dart';
 import 'package:morimori/bloc/metamask_auth_bloc.dart';
 import 'package:morimori/bloc/wallet_state.dart';
+import 'package:morimori/pages/email_nickname_screen.dart';
 import 'package:morimori/pages/terms_screen.dart';
 import 'package:morimori/ui/features/widgets/custom/other_custom_widgets.dart';
 import 'package:morimori/ui/features/widgets/custom/show_snack_bar.dart';
 import 'package:morimori/utils/constants/app_constants.dart';
+import 'package:provider/provider.dart';
 
 import '../../bloc/wallet_event.dart';
 import 'package:morimori/ui/features/widgets/custom/nsalert_dialog.dart';
+
+import 'package:http/http.dart' as http;
+
+import '../models/user_model.dart';
+
 
 
 class LoginPage extends StatefulWidget {
@@ -28,22 +38,43 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return BlocListener<MetaMaskAuthBloc, WalletState>(
       // BLoC 상태에 따른 리스너 설정
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is WalletErrorState) {
           print('오류 상태');
           // 오류 상태 처리
           hideDialog(dialogContext);
           ShowSnackBar.buildSnackbar(context, state.message, true);
         } else if (state is WalletReceivedSignatureState) {
+          const storage = FlutterSecureStorage();
           print('서명 수신 성공');
           // 서명 수신 성공 처리
           hideDialog(dialogContext);
           ShowSnackBar.buildSnackbar(
               context, AppConstants.authenticationSuccessful);
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (BuildContext context) {
-                return const TermsScreen();
-              }));
+          final result = await isUserRegisterd(
+              storage.read(key: 'address').toString()
+          );
+          print('isUserRegisterd : $result');
+          if(result == "User not found") {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (BuildContext context) {
+                  return const EmailNicknameScreen();
+                }));
+          } else if(result == "Internal server error") {
+            ShowSnackBar.buildSnackbar(
+            context, "Internal server error");
+          } else {
+            Map<String, dynamic> res = json.decode(result);
+            var data = UserData.fromJson(res);
+            if(data._userId != null) {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (BuildContext context) {
+                    return const MainPage();
+                  }));
+            } else {
+              ShowSnackBar.buildSnackbar(context, 'error', true);
+            }
+          }
         }
       },
       child: Scaffold(
@@ -236,5 +267,86 @@ class _LoginPageState extends State<LoginPage> {
       message,
       style: const TextStyle(fontSize: 18, color: Colors.white),
     );
+  }
+}
+
+Future<String> isUserRegisterd(String address) async {
+  http.Response response = await http.get(
+    Uri.parse('https://nftmori.shop/api/users/$address'),
+    headers: <String, String>{
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  );
+
+  //print(response.body);
+  return response.body;
+}
+
+class UserData {
+  int? _userId;
+  String? _walletAddress;
+  String? _email;
+  String? _username;
+  String? _createdAt;
+  String? _updatedAt;
+
+  UserData(
+      {int? userId,
+        String? walletAddress,
+        String? email,
+        String? username,
+        String? createdAt,
+        String? updatedAt}) {
+    if (userId != null) {
+      _userId = userId;
+    }
+    if (walletAddress != null) {
+      _walletAddress = walletAddress;
+    }
+    if (email != null) {
+      _email = email;
+    }
+    if (username != null) {
+      _username = username;
+    }
+    if (createdAt != null) {
+      _createdAt = createdAt;
+    }
+    if (updatedAt != null) {
+      _updatedAt = updatedAt;
+    }
+  }
+
+  int? get userId => _userId;
+  set userId(int? userId) => _userId = userId;
+  String? get walletAddress => _walletAddress;
+  set walletAddress(String? walletAddress) => _walletAddress = walletAddress;
+  String? get email => _email;
+  set email(String? email) => _email = email;
+  String? get username => _username;
+  set username(String? username) => _username = username;
+  String? get createdAt => _createdAt;
+  set createdAt(String? createdAt) => _createdAt = createdAt;
+  String? get updatedAt => _updatedAt;
+  set updatedAt(String? updatedAt) => _updatedAt = updatedAt;
+
+  UserData.fromJson(Map<String, dynamic> json) {
+    _userId = json['user_id'];
+    _walletAddress = json['walletAddress'];
+    _email = json['email'];
+    _username = json['username'];
+    _createdAt = json['createdAt'];
+    _updatedAt = json['updatedAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['user_id'] = this._userId;
+    data['walletAddress'] = this._walletAddress;
+    data['email'] = this._email;
+    data['username'] = this._username;
+    data['createdAt'] = this._createdAt;
+    data['updatedAt'] = this._updatedAt;
+    return data;
   }
 }

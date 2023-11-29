@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:morimori/pages/EventMakingPage.dart';
+import 'package:morimori/pages/email_nickname_screen.dart';
 import 'package:morimori/pages/terms_screen.dart';
 
 import 'EventPage.dart';
 import 'ProfilePage.dart';
 import 'SettingPage.dart';
+
+import 'package:http/http.dart' as http;
+
 
 
 class MainPage extends StatefulWidget{
@@ -234,10 +238,45 @@ Widget MenuDrawer(BuildContext context){
             Navigator.push(context, MaterialPageRoute(builder: (context) =>const TermsScreen()));
           },
         ),
+
+        ListTile(
+          leading: Icon(
+              Icons.settings
+          ),
+          title: const Text('사용자정보조회테스트'),
+          onTap: () async {
+            String address = 'aaaaaaa';
+            final result = await postUserRegister(address);
+            print(result);
+          },
+        ),
+
+        ListTile(
+          leading: Icon(
+              Icons.settings
+          ),
+          title: const Text('회원가입 스크린'),
+          onTap: () async {
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>const EmailNicknameScreen()));
+          },
+        ),
       ],
     ),
   );
 
+}
+
+
+
+Future<String> postUserRegister(String address) async {
+  http.Response response = await http.get(
+    Uri.parse('https://nftmori.shop/api/users/$address'),
+    headers: <String, String>{
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  );
+  //print(response.body);
+  return response.body;
 }
 
 TabBar get _tabBar => const TabBar(

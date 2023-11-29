@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:morimori/pages/MainPage.dart';
+import 'package:provider/provider.dart';
 import '/bloc/wallet_event.dart';
 import '/utils/constants/app_constants.dart';
 import 'package:walletconnect_flutter_v2/apis/sign_api/models/session_models.dart';
 import 'package:walletconnect_flutter_v2/apis/sign_api/models/sign_client_models.dart';
 import 'package:walletconnect_flutter_v2/apis/utils/namespace_utils.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../services/services.dart';
 import 'wallet_state.dart';
@@ -57,6 +59,8 @@ class MetaMaskAuthBloc extends Bloc<WalletEvent, WalletState> {
                   final String walletAddress = NamespaceUtils.getAccount(
                     sessionData.namespaces.values.first.accounts.first,
                   );
+                  const storage = FlutterSecureStorage();
+                  await storage.write(key: 'address', value: walletAddress);
                   debugPrint("WALLET ADDRESS - $walletAddress");
                   print('9');
                   // 메타마스크 앱으로 다시 리다이렉트
