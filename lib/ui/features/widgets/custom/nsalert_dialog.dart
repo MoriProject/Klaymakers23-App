@@ -10,7 +10,7 @@ class NSAlertDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       contentPadding: const EdgeInsets.all(0),
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.blue,
       content: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(

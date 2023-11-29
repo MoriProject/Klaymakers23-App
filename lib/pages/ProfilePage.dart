@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:morimori/pages/WorkInfoPage.dart';
+import 'package:provider/provider.dart';
+
+import '../models/user_model.dart';
 
 
 class ProfilePage extends StatefulWidget {
@@ -37,14 +40,9 @@ class ProfilePageHome extends State<ProfilePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    var widths = MediaQuery
-        .of(context)
-        .size
-        .width;
-    var heights = MediaQuery
-        .of(context)
-        .size
-        .height;
+    var widths = MediaQuery.of(context).size.width;
+    var heights = MediaQuery.of(context).size.height;
+    final provider = Provider.of<UserModel>(context, listen: false);
 
     return Scaffold(
         key: globalKey,
@@ -66,8 +64,8 @@ class ProfilePageHome extends State<ProfilePage> with TickerProviderStateMixin {
                       'https://dcjnmis8jxmbl.cloudfront.net/upload/image/member/thumbnail/2022/01/12/3Dwra57Bjvhcqsuy.webp'),
                 ),
               ),
-              Text('LOGAN?', style: TextStyle(fontSize: 20),),
-              Icon(Icons.expand_more_outlined),
+              Text('${provider.nickname}', style: TextStyle(fontSize: 20),),
+              // Icon(Icons.expand_more_outlined),
               Divider(),
               TabBar(
                   controller: controller,

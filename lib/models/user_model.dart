@@ -9,6 +9,7 @@ class UserModel extends ChangeNotifier {
   int? _userId;
   String? _createdAt;
   String? _updatedAt;
+  bool _isLogined = false;
 
   get address => _address;
   get email => _email;
@@ -16,6 +17,7 @@ class UserModel extends ChangeNotifier {
   get userId => _userId;
   get createdAt => _createdAt;
   get updatedAt => _updatedAt;
+  get isLogined => _isLogined;
 
   inputAddress() async {
     const storage = FlutterSecureStorage();
@@ -38,7 +40,9 @@ class UserModel extends ChangeNotifier {
     _userId = data._userId;
     _createdAt = data.createdAt;
     _updatedAt = data._updatedAt;
+    _isLogined = true;
   }
+
   inputEmail(String email) {
     _email = email;
     if (kDebugMode) {

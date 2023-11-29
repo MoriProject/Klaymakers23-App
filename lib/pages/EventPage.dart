@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:morimori/pages/EventApply.dart';
+import 'package:provider/provider.dart';
+
+import '../models/user_model.dart';
+import '../ui/features/widgets/custom/need_login_dialog.dart';
 
 
 class EventPage extends StatefulWidget{
@@ -501,8 +505,14 @@ Widget eventInfo(BuildContext context){
               children: <Widget>[
 
                 TextButton(onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  const EventApplyPage()));
-
+                  Provider.of<UserModel>(context, listen: false).printData();
+                  var userAddress = Provider.of<UserModel>(context, listen: false).address;
+                  print('userAddress : $userAddress');
+                  if (userAddress == null) {
+                    showHackathonLoginDialog(context);
+                  } else {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const EventApplyPage()));
+                  }
                 }, style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.lightBlueAccent)), child: Text('Apply Now',style: TextStyle(color: Colors.white),) )
               ],
             )

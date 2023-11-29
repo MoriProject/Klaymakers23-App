@@ -6,6 +6,7 @@ import 'package:morimori/pages/terms_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../models/user_model.dart';
+import '../ui/features/widgets/custom/need_login_dialog.dart';
 import 'EventPage.dart';
 import 'ProfilePage.dart';
 import 'SettingPage.dart';
@@ -142,9 +143,9 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
           var userAddress = Provider.of<UserModel>(context, listen: false).address;
           print('userAddress : $userAddress');
           if (userAddress == null) {
-            _showHackathonLoginDialog(context);
+            showHackathonLoginDialog(context);
           } else {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => EventMakingPage()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const EventMakingPage()));
           }
         },
         child: const Icon(
@@ -153,39 +154,6 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
       ),
     );
   }
-}
-
-void _showHackathonLoginDialog(BuildContext context) async {
-  showDialog(
-    context: context,
-    builder: (dialogContext) => AlertDialog(
-      title: const Text('Want to host a hackathon?'),
-      content: RichText(
-        text: const TextSpan(
-          style: TextStyle(color: Colors.black, fontSize: 16), // 기본 텍스트 색상
-          children: <TextSpan>[
-            TextSpan(text: 'Sign in with your wallet'),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: const Text('Cancel'),
-          onPressed: () {
-            Navigator.of(dialogContext).pop();
-          },
-        ),
-        TextButton(
-          child: const Text('Login'),
-          onPressed: () {
-            Navigator.of(dialogContext).pop();
-            Navigator.of(context).pop();
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
-          },
-        ),
-      ],
-    ),
-  );
 }
 
 

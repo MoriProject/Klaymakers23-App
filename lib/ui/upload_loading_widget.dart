@@ -10,7 +10,7 @@ loadingWidget(context){
           content: StatefulBuilder(
             builder: (BuildContext context,
                 StateSetter setState) {
-              return SingleChildScrollView(
+              return const SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
                     CircularProgressIndicator(),
@@ -18,7 +18,11 @@ loadingWidget(context){
                         padding:
                         EdgeInsets.all(8.0),
                         child: Text(
-                            'Uploading to the potato server...\nPlease wait a moment.\nNever close the screen!'))
+                            'Uploading to the potato server...\nPlease wait a moment.\nNever close the screen!',
+                          style: TextStyle(
+                            overflow: TextOverflow.fade,
+                          ),
+                        ))
                   ],
                 ),
               );
