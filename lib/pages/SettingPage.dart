@@ -64,7 +64,7 @@ class SettingPageHome extends State<SettingPage> with TickerProviderStateMixin {
                 width: 100,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(180),
-                  child:  Image.network('https://dcjnmis8jxmbl.cloudfront.net/upload/image/member/thumbnail/2022/01/12/3Dwra57Bjvhcqsuy.webp'),
+                  child:  Image.asset('assets/113495932_p0.png'),
                 ),
               )
 

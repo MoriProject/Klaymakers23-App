@@ -27,10 +27,40 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
   late final TabController tabController;
   var TextEditController = TextEditingController();
 
+
+  var sampleImageText = List.filled(0, '0', growable: true);
+  var sampleTitleText = List.filled(0, '0', growable: true);
+
+
+
+
+
+
   @override
   void initState(){
     super.initState();
     tabController = TabController(length: 3, vsync: this);
+    sampleImageText.add('assets/shibuyaRinCity.png');
+    sampleImageText.add('assets/110021413_p0.png');
+    sampleImageText.add('assets/111057171_p0.png');
+    sampleImageText.add('assets/111571897_p0.png');
+    sampleImageText.add('assets/112726025_p0.png');
+    sampleImageText.add('assets/112909957_p0.png');
+    sampleImageText.add('assets/113495932_p0.png');
+    sampleImageText.add('assets/113719302_p0.png');
+
+
+    sampleTitleText.add('Shibuya & Rin');
+    sampleTitleText.add('BlueArchive Kicker');
+    sampleTitleText.add('shining forehead');
+    sampleTitleText.add('green and pink');
+    sampleTitleText.add('punch punch punch');
+    sampleTitleText.add('blue stone and money');
+    sampleTitleText.add('Gourmet research');
+    sampleTitleText.add('friend who fell');
+
+
+
   }
 
   @override
@@ -113,20 +143,20 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
         [
           SizedBox(
             height: MediaQuery.of(context).size.height - 60,
-            child: RefreshIndicator(child: listViewer(), onRefresh: () async{
+            child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText), onRefresh: () async{
 
             }),
           ),
           SizedBox(
             height: MediaQuery.of(context).size.height - 60,
-            child: RefreshIndicator(child: listViewer(), onRefresh: () async{
+            child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText), onRefresh: () async{
 
             }),
           ),
 
           SizedBox(
             height: MediaQuery.of(context).size.height - 60,
-            child: RefreshIndicator(child: listViewer(), onRefresh: () async{
+            child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText), onRefresh: () async{
 
             }),
           ),
@@ -180,7 +210,7 @@ Widget MenuDrawer(BuildContext context){
                   },
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(180),
-                    child:  Image.network('https://dcjnmis8jxmbl.cloudfront.net/upload/image/member/thumbnail/2022/01/12/3Dwra57Bjvhcqsuy.webp'),
+                    child:  Image.asset('assets/113495932_p0.png'),
                   ),
 
                 ),
@@ -289,13 +319,13 @@ TabBar get _tabBar => const TabBar(
 );
 
 
-Widget listViewer(){
+Widget listViewer(sampleImageText,sampleTitleText){
   return ListView.separated(
       scrollDirection: Axis.vertical,
 
       //shrinkWrap: true,
       padding: const EdgeInsets.all(2.0),
-      itemCount:10,
+      itemCount: sampleImageText.length,
       itemBuilder: (BuildContext context, int index){
         var widths = MediaQuery.of(context).size.width;
         var heights = MediaQuery.of(context).size.height;
@@ -320,16 +350,15 @@ Widget listViewer(){
                     children: <Widget>[
 
 
-                      Text('제목제목제목',style: TextStyle(fontSize: 30),),
+                      Text(sampleTitleText[index],style: const TextStyle(fontSize: 30),),
                       //여기다가
 
 
 
                       SizedBox(
-                        width: widths - 300,
+                        //width: widths - 300,
                       ),
-                      Text(
-                          '30 days left'),
+                      const Text('30 days left'),
                       //=> 시간 들어가는 부분(영국 표준 협정시 기준으로 로직을 계산해서 넣을것)
                     ],
                   ),
@@ -346,9 +375,9 @@ Widget listViewer(){
 
                   Padding(padding:  const EdgeInsets.all(5.0),
 
-                  child:    ClipRRect(
+                  child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child:  Image.network('https://hidamarirhodonite.kirara.ca/spread/200297.png'),
+                    child: Image.asset(sampleImageText[index]),
                   ),
 
                     ),
