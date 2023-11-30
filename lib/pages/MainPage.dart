@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:morimori/pages/EventMakingPage.dart';
 import 'package:morimori/pages/LoginPage.dart';
+import 'package:morimori/pages/SearchingScreen.dart';
 import 'package:morimori/pages/email_nickname_screen.dart';
 import 'package:morimori/pages/terms_screen.dart';
 import 'package:provider/provider.dart';
@@ -8,18 +9,13 @@ import '../models/user_model.dart';
 import '../ui/features/widgets/custom/need_login_dialog.dart';
 import 'EventPage.dart';
 import 'ProfilePage.dart';
-import 'SearchPage.dart';
 import 'SettingPage.dart';
 import 'package:http/http.dart' as http;
 
 
 
 class MainPage extends StatefulWidget{
-
-
-
   const MainPage({Key? key}) : super(key: key);
-
   @override
   MainPageHome createState() => MainPageHome();
 }
@@ -56,29 +52,25 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
                 onTap: (){
                   mainPageGlobalKey.currentState!.openDrawer();
                 },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+                child: const Padding(
+                  padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
                   child: Icon(Icons.menu),
                 ),
               ),
-              backgroundColor: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
-
-              title: TextField(
-                  controller: TextEditController,
-
+              centerTitle: true,
+              title: Image.asset(
+                  'assets/morilogo.png',
+                width: 60,
               ),
-              
+              backgroundColor: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
               actions: [
-
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
                   child: IconButton(onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage(searchData: TextEditController.text,)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchingScreen()));
                   }, icon: const Icon(Icons.search)),
                 ),
-                
               ],
-
               bottom: PreferredSize(
                 preferredSize: _tabBar.preferredSize,
                 child: Material(
