@@ -54,11 +54,11 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
 
 
     sampleTitleText.add('Shibuya & Rin');
-    sampleTitleText.add('BlueArchive Kicker');
+    sampleTitleText.add('BlueArchive');
     sampleTitleText.add('shining forehead');
     sampleTitleText.add('green and pink');
-    sampleTitleText.add('punch punch punch');
-    sampleTitleText.add('blue stone and money');
+    sampleTitleText.add('punch punch');
+    sampleTitleText.add('blue stone');
     sampleTitleText.add('Gourmet research');
     sampleTitleText.add('friend who fell');
 
@@ -82,119 +82,117 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child : Scaffold(
+    return Scaffold(
       key: mainPageGlobalKey,
       drawer: MenuDrawer(context),
       body: NestedScrollView(
-        floatHeaderSlivers: true,
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled){
-          return <Widget>[
-            SliverAppBar(
-              leading: GestureDetector(
-                onTap: (){
-                  mainPageGlobalKey.currentState!.openDrawer();
-                },
-                child: const Padding(
-                  padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
-                  child: Icon(Icons.menu),
-                ),
-              ),
-              centerTitle: true,
-              title: Image.asset(
-                  'assets/morilogo.png',
-                width: 60,
-              ),
-              backgroundColor: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-                  child: IconButton(onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchingScreen()));
-                  }, icon: const Icon(Icons.search)),
-                ),
-              ],
-              bottom: PreferredSize(
-                preferredSize: _tabBar.preferredSize,
-                child: Material(
-                  color: Theme.of(context).brightness == Brightness.light
-                      ? Colors.white
-                      : Colors.black,
-                  child: Theme(
-                    //<-- SEE HERE
-                    data: ThemeData().copyWith(splashColor: Colors.grey),
-                    child: TabBar(
-                      indicatorSize: TabBarIndicatorSize.label,
-                      // indicator: BoxDecoration(
-                      //     borderRadius: BorderRadius.circular(20), // Creates border
-                      //     color: Colors.greenAccent),
-                      controller: tabController,
-                      //이것같음.
-                      tabs: const [
-                        Tab(
-                            child: Text("Open",
-                                style: TextStyle(color: Colors.grey))),
-                        Tab(
-                            child: Text("Upcoming",
-                                style: TextStyle(color: Colors.grey))),
-                        Tab(
-                            child: Text("Past",
-                                style: TextStyle(color: Colors.grey))),
+    floatHeaderSlivers: true,
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled){
+      return <Widget>[
+        SliverAppBar(
+          leading: GestureDetector(
+            onTap: (){
+              mainPageGlobalKey.currentState!.openDrawer();
+            },
+            child: const Padding(
+              padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+              child: Icon(Icons.menu),
+            ),
+          ),
+          centerTitle: true,
+          title: Image.asset(
+              'assets/morilogo.png',
+            width: 60,
+          ),
+          backgroundColor: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.black,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+              child: IconButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const SearchingScreen()));
+              }, icon: const Icon(Icons.search)),
+            ),
+          ],
+          bottom: PreferredSize(
+            preferredSize: _tabBar.preferredSize,
+            child: Material(
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Colors.white
+                  : Colors.black,
+              child: Theme(
+                //<-- SEE HERE
+                data: ThemeData().copyWith(splashColor: Colors.grey),
+                child: TabBar(
+                  indicatorSize: TabBarIndicatorSize.label,
+                  // indicator: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(20), // Creates border
+                  //     color: Colors.greenAccent),
+                  controller: tabController,
+                  //이것같음.
+                  tabs: const [
+                    Tab(
+                        child: Text("Open",
+                            style: TextStyle(color: Colors.grey))),
+                    Tab(
+                        child: Text("Upcoming",
+                            style: TextStyle(color: Colors.grey))),
+                    Tab(
+                        child: Text("Past",
+                            style: TextStyle(color: Colors.grey))),
 
-                      ],
-                    ),
-                  ),
+                  ],
                 ),
               ),
             ),
-          ];
-          }, body: TabBarView(
-
-        controller: tabController,
-
-        children: <Widget>
-        [
-          SizedBox(
-            height: MediaQuery.of(context).size.height - 60,
-            child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText,sampleDays), onRefresh: () async{
-
-            }),
           ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height - 60,
-            child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText,sampleDays), onRefresh: () async{
+        ),
+      ];
+      }, body: TabBarView(
 
-            }),
-          ),
+    controller: tabController,
 
-          SizedBox(
-            height: MediaQuery.of(context).size.height - 60,
-            child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText,sampleDays), onRefresh: () async{
+    children: <Widget>
+    [
+      SizedBox(
+        height: MediaQuery.of(context).size.height - 60,
+        child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText,sampleDays), onRefresh: () async{
 
-            }),
-          ),
-        ],
+        }),
+      ),
+      SizedBox(
+        height: MediaQuery.of(context).size.height - 60,
+        child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText,sampleDays), onRefresh: () async{
+
+        }),
+      ),
+
+      SizedBox(
+        height: MediaQuery.of(context).size.height - 60,
+        child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText,sampleDays), onRefresh: () async{
+
+        }),
+      ),
+    ],
       )
       ),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue,
-        onPressed: () {
-          Provider.of<UserModel>(context, listen: false).printData();
-          var userAddress = Provider.of<UserModel>(context, listen: false).address;
-          print('userAddress : $userAddress');
-          if (userAddress == null) {
-            showHackathonLoginDialog(context);
-          } else {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const EventMakingPage()));
-          }
-        },
-        child: const Icon(
-          Icons.add,
-        ),
-      ),
+    backgroundColor: Colors.blue,
+    onPressed: () {
+      Provider.of<UserModel>(context, listen: false).printData();
+      var userAddress = Provider.of<UserModel>(context, listen: false).address;
+      print('userAddress : $userAddress');
+      if (userAddress == null) {
+        showHackathonLoginDialog(context);
+      } else {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const EventMakingPage()));
+      }
+    },
+    child: const Icon(
+      Icons.add,
     ),
+      ),
     );
   }
 }
