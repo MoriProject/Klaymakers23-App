@@ -271,38 +271,6 @@ Widget MenuDrawer(BuildContext context){
             Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingPage()));
           },
         ),
-        ///약관 스크린 테스트 용
-        ListTile(
-          leading: Icon(
-              Icons.settings
-          ),
-          title: const Text('terms test screen'),
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>const TermsScreen()));
-          },
-        ),
-
-        ListTile(
-          leading: Icon(
-              Icons.settings
-          ),
-          title: const Text('사용자정보조회테스트'),
-          onTap: () async {
-            String address = 'aaaaaaa';
-            final result = await postUserRegister(address);
-            print(result);
-          },
-        ),
-
-        ListTile(
-          leading: Icon(
-              Icons.settings
-          ),
-          title: const Text('회원가입 스크린'),
-          onTap: () async {
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>const EmailNicknameScreen()));
-          },
-        ),
       ],
     ),
   );
