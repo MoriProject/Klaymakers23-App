@@ -23,9 +23,11 @@ class EventMakingPageHome extends State<EventMakingPage> with TickerProviderStat
   void getImage(ImageSource source) async {
     _pickedImages.clear();
     final XFile? image = await _picker.pickImage(source: source);
-    setState(() {
-      _pickedImages.add(image);
-    });
+    if (image != null) {
+      setState(() {
+        _pickedImages.add(image);
+      });
+    }
   }
 
   double totalPrizeAmount = 0;
@@ -155,7 +157,7 @@ class EventMakingPageHome extends State<EventMakingPage> with TickerProviderStat
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Are you sureyou want to create your hackation?'),
+          title: const Text('Are you sure you want to create your hackation?'),
           content: RichText(
             text: const TextSpan(
               style: TextStyle(color: Colors.black), // 기본 텍스트 색상
@@ -175,7 +177,7 @@ class EventMakingPageHome extends State<EventMakingPage> with TickerProviderStat
               onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
-              child: const Text('Create'),
+              child: Text('Create', style: TextStyle(color: Colors.blue)),
               onPressed: () {
                 Navigator.pop(context);
                 _showTransferDetailsDialog();
