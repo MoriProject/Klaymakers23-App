@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:morimori/pages/edit_event_screen.dart';
 
 import '../ui/upload_loading_widget.dart';
 import 'EventPage.dart';
@@ -98,15 +99,32 @@ class WorkInfoPageHome extends State<WorkInfoPage> with TickerProviderStateMixin
                         ),
                       ),
 
-
-
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 5.0),
                         child: Text('Logan'),
-                      )
+                      ),
 
+                      Expanded(child: Container()),
 
-                  ],
+                      TextButton(
+                        style: const ButtonStyle(
+                          backgroundColor: MaterialStatePropertyAll<Color>(Colors.blue),
+                        ),
+                          onPressed: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (BuildContext context) {
+                                  return const EditEventScreen();
+                                }));
+                          },
+                        child: Text(
+                            'Edit',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+
+                      ),
+                    ],
                   ),
                 ),
 
