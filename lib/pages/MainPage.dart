@@ -82,7 +82,8 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+        child : Scaffold(
       key: mainPageGlobalKey,
       drawer: MenuDrawer(context),
       body: NestedScrollView(
@@ -193,6 +194,7 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
           Icons.add,
         ),
       ),
+    ),
     );
   }
 }
@@ -368,7 +370,7 @@ Widget listViewer(sampleImageText,sampleTitleText, sampleDays){
                     children: <Widget>[
 
 
-                      Text(sampleTitleText[index],style: const TextStyle(fontSize: 30),),
+                      Text(sampleTitleText[index],style: const TextStyle(fontSize: 30), overflow: TextOverflow.ellipsis,),
                       //여기다가
 
 
