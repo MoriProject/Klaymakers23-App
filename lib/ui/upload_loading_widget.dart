@@ -31,3 +31,28 @@ loadingWidget(context){
         );
       });
 }
+
+
+NotiWidget(context){
+
+  showDialog(
+      context: context,
+      builder: ((context) => AlertDialog(
+        title: Text('warning'),
+        content: Text("Are you sure you want to complete determining the winner?"),
+        actions: [
+          TextButton(
+            onPressed: (){
+              loadingWidget(context);
+            },
+            child: Text('Yes'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('No'),
+          ),
+        ],
+      )));
+
+
+}

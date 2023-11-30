@@ -7,6 +7,7 @@ import 'package:morimori/pages/terms_screen.dart';
 import 'package:provider/provider.dart';
 import '../models/user_model.dart';
 import '../ui/features/widgets/custom/need_login_dialog.dart';
+import 'EventHostPage.dart';
 import 'EventPage.dart';
 import 'ProfilePage.dart';
 import 'SettingPage.dart';
@@ -30,6 +31,8 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
 
   var sampleImageText = List.filled(0, '0', growable: true);
   var sampleTitleText = List.filled(0, '0', growable: true);
+  var sampleDays = List.filled(0,'0',growable: true);
+
 
 
 
@@ -58,6 +61,15 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
     sampleTitleText.add('blue stone and money');
     sampleTitleText.add('Gourmet research');
     sampleTitleText.add('friend who fell');
+
+    sampleDays.add('24');
+    sampleDays.add('30');
+    sampleDays.add('2');
+    sampleDays.add('14');
+    sampleDays.add('7');
+    sampleDays.add('6');
+    sampleDays.add('3');
+    sampleDays.add('36');
 
 
 
@@ -143,20 +155,20 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
         [
           SizedBox(
             height: MediaQuery.of(context).size.height - 60,
-            child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText), onRefresh: () async{
+            child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText,sampleDays), onRefresh: () async{
 
             }),
           ),
           SizedBox(
             height: MediaQuery.of(context).size.height - 60,
-            child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText), onRefresh: () async{
+            child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText,sampleDays), onRefresh: () async{
 
             }),
           ),
 
           SizedBox(
             height: MediaQuery.of(context).size.height - 60,
-            child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText), onRefresh: () async{
+            child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText,sampleDays), onRefresh: () async{
 
             }),
           ),
@@ -319,20 +331,26 @@ TabBar get _tabBar => const TabBar(
 );
 
 
-Widget listViewer(sampleImageText,sampleTitleText){
+Widget listViewer(sampleImageText,sampleTitleText, sampleDays){
   return ListView.separated(
-      scrollDirection: Axis.vertical,
+    scrollDirection: Axis.vertical,
 
-      //shrinkWrap: true,
-      padding: const EdgeInsets.all(2.0),
-      itemCount: sampleImageText.length,
-      itemBuilder: (BuildContext context, int index){
-        var widths = MediaQuery.of(context).size.width;
-        var heights = MediaQuery.of(context).size.height;
+    //shrinkWrap: true,
+    padding: const EdgeInsets.all(2.0),
+    itemCount: sampleImageText.length,
+    itemBuilder: (BuildContext context, int index){
+      var widths = MediaQuery.of(context).size.width;
+      var heights = MediaQuery.of(context).size.height;
 
-        return GestureDetector(
+      return GestureDetector(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const EventPage()));
+
+            if(index == 0 ){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const EventHostPage()));
+            }else{
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const EventPage()));
+            }
+
           },
           child: Card(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
@@ -358,7 +376,7 @@ Widget listViewer(sampleImageText,sampleTitleText){
                       SizedBox(
                         //width: widths - 300,
                       ),
-                      const Text('30 days left'),
+                      Text('${sampleDays[index]} days left'),
                       //=> 시간 들어가는 부분(영국 표준 협정시 기준으로 로직을 계산해서 넣을것)
                     ],
                   ),
@@ -375,12 +393,12 @@ Widget listViewer(sampleImageText,sampleTitleText){
 
                   Padding(padding:  const EdgeInsets.all(5.0),
 
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(sampleImageText[index]),
-                  ),
-
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.asset(sampleImageText[index]),
                     ),
+
+                  ),
 
 
 
@@ -476,14 +494,14 @@ Widget listViewer(sampleImageText,sampleTitleText){
               ),
             ),
           )
-        );
+      );
 
 
 
-  },
-      separatorBuilder: (BuildContext context, int index) {
-        return Container();
-      },
+    },
+    separatorBuilder: (BuildContext context, int index) {
+      return Container();
+    },
 
 
   );
