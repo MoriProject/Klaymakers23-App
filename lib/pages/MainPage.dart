@@ -32,6 +32,8 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
   var sampleImageText = List.filled(0, '0', growable: true);
   var sampleTitleText = List.filled(0, '0', growable: true);
   var sampleDays = List.filled(0,'0',growable: true);
+  var tagData = List.filled(0,'0', growable: true);
+  var tagData2 = List.filled(0,'0', growable: true);
 
 
 
@@ -43,19 +45,19 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
   void initState(){
     super.initState();
     tabController = TabController(length: 3, vsync: this);
-    sampleImageText.add('assets/shibuyaRinCity.png');
-    sampleImageText.add('assets/110021413_p0.png');
-    sampleImageText.add('assets/111057171_p0.png');
-    sampleImageText.add('assets/111571897_p0.png');
+    sampleImageText.add('assets/1.png');
+    sampleImageText.add('assets/2.png');
+    sampleImageText.add('assets/3.png');
+    sampleImageText.add('assets/4.png');
     sampleImageText.add('assets/112726025_p0.png');
     sampleImageText.add('assets/112909957_p0.png');
     sampleImageText.add('assets/113495932_p0.png');
     sampleImageText.add('assets/113719302_p0.png');
 
 
-    sampleTitleText.add('Shibuya & Rin');
-    sampleTitleText.add('BlueArchive');
-    sampleTitleText.add('shining forehead');
+    sampleTitleText.add('겨울 일러스트 대회');
+    sampleTitleText.add('야경 & 시티팝');
+    sampleTitleText.add('학교 & 청춘 & 여름 대회');
     sampleTitleText.add('green and pink');
     sampleTitleText.add('punch punch');
     sampleTitleText.add('blue stone');
@@ -70,6 +72,31 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
     sampleDays.add('6');
     sampleDays.add('3');
     sampleDays.add('36');
+
+    tagData.add('겨울');
+    tagData.add('시티팝');
+    tagData.add('청춘');
+    tagData.add('엑');
+    tagData.add('ㅋ');
+    tagData.add('ㅋ');
+    tagData.add('ㅋ');
+    tagData.add('ㅋ');
+    tagData.add('ㅋ');
+    tagData.add('ㅋ');
+
+    tagData2.add('눈');
+    tagData2.add('포장마차');
+    tagData2.add('청춘');
+    tagData2.add('눈');
+    tagData2.add('눈');
+    tagData2.add('눈');
+    tagData2.add('눈');
+    tagData2.add('눈');
+    tagData2.add('눈');
+    tagData2.add('눈');
+
+
+
 
 
 
@@ -155,20 +182,20 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
     [
       SizedBox(
         height: MediaQuery.of(context).size.height - 60,
-        child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText,sampleDays), onRefresh: () async{
+        child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText,sampleDays,tagData,tagData2), onRefresh: () async{
 
         }),
       ),
       SizedBox(
         height: MediaQuery.of(context).size.height - 60,
-        child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText,sampleDays), onRefresh: () async{
+        child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText,sampleDays,tagData,tagData2), onRefresh: () async{
 
         }),
       ),
 
       SizedBox(
         height: MediaQuery.of(context).size.height - 60,
-        child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText,sampleDays), onRefresh: () async{
+        child: RefreshIndicator(child: listViewer(sampleImageText,sampleTitleText,sampleDays,tagData,tagData2), onRefresh: () async{
 
         }),
       ),
@@ -176,23 +203,23 @@ class MainPageHome extends State<MainPage> with TickerProviderStateMixin{
       )
       ),
 
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-    backgroundColor: Colors.blue,
-    onPressed: () {
-      Provider.of<UserModel>(context, listen: false).printData();
-      var userAddress = Provider.of<UserModel>(context, listen: false).address;
-      print('userAddress : $userAddress');
-      if (userAddress == null) {
-        showHackathonLoginDialog(context);
-      } else {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const EventMakingPage()));
-      }
-    },
-    child: const Icon(
-      Icons.add,
-    ),
-      ),
+    //   floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    //   floatingActionButton: FloatingActionButton(
+    // backgroundColor: Colors.blue,
+    // onPressed: () {
+    //   Provider.of<UserModel>(context, listen: false).printData();
+    //   var userAddress = Provider.of<UserModel>(context, listen: false).address;
+    //   print('userAddress : $userAddress');
+    //   if (userAddress == null) {
+    //     showHackathonLoginDialog(context);
+    //   } else {
+    //     Navigator.push(context, MaterialPageRoute(builder: (context) => const EventMakingPage()));
+    //   }
+    // },
+    // child: const Icon(
+    //   Icons.add,
+    // ),
+    //   ),
     );
   }
 }
@@ -299,7 +326,7 @@ TabBar get _tabBar => const TabBar(
 );
 
 
-Widget listViewer(sampleImageText,sampleTitleText, sampleDays){
+Widget listViewer(sampleImageText,sampleTitleText, sampleDays,tagData, tagData2){
   return ListView.separated(
     scrollDirection: Axis.vertical,
 
@@ -391,10 +418,10 @@ Widget listViewer(sampleImageText,sampleTitleText, sampleDays){
                                     width: 1)
                             ),
                             elevation: 0,
-                            child: const Padding(
+                            child: Padding(
                                 padding: EdgeInsets.fromLTRB(20, 8, 20, 8),
                                 child:
-                                Text('#egg',
+                                Text('#${tagData[index]}',
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 12
                                     ))
@@ -411,10 +438,10 @@ Widget listViewer(sampleImageText,sampleTitleText, sampleDays){
                                     width: 1)
                             ),
                             elevation: 0,
-                            child: const Padding(
+                            child: Padding(
                                 padding: EdgeInsets.fromLTRB(20, 8, 20, 8),
                                 child:
-                                Text('#character',
+                                Text('#${tagData2[index]}',
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 12
                                     ))
@@ -439,7 +466,7 @@ Widget listViewer(sampleImageText,sampleTitleText, sampleDays){
                           child: const Padding(
                               padding: EdgeInsets.fromLTRB(20, 8, 20, 8),
                               child:
-                              Text('Apply now',
+                              Text('Apply',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 12
                                   ))
